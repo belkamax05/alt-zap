@@ -1,0 +1,39 @@
+{
+  "name": "cli",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/cli/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/cli",
+        "main": "apps/cli/src/index.ts",
+        "tsConfig": "apps/cli/tsconfig.lib.json",
+        "assets": ["apps/cli/*.md"],
+        "generatePackageJson": true,
+        "format": ["cjs"]
+      }
+    },
+    "bun:build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "bun build apps/cli/src/index.ts --outdir dist/apps/cli"
+      }
+    },
+    "esbuild:build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/cli",
+        "main": "apps/cli/src/index.ts",
+        "tsConfig": "apps/cli/tsconfig.lib.json",
+        "assets": ["apps/cli/*.md"],
+        "generatePackageJson": true,
+        "format": ["cjs"]
+      }
+    }
+  }
+}

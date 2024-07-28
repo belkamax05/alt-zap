@@ -1,0 +1,3 @@
+function az-error() {
+    azError "$@"
+}
