@@ -1,5 +1,5 @@
-function az-cli-proxy() {
-    local scriptResult=$(az cli "$@" | tee /dev/tty)
+function az-cli-proxy-silent() {
+    local scriptResult=$(az cli "$@")
     local lastOutputLine=$(echo "${scriptResult}" | tail -n 1)
 
     azDebug "lastOutputLine: ${lastOutputLine}"

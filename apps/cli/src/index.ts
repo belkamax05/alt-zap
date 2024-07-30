@@ -9,11 +9,12 @@ const hiBye = async () => {
 };
 
 const printEcho = () => {
-  console.log('cd ..');
+  console.log('ls');
 };
 
 const main = async () => {
-  printEcho();
+  await hiBye();
+  await printEcho();
 };
 
 main();
