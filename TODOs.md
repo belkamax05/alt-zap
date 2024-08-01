@@ -11,3 +11,7 @@ proxy to "config set"
 last nav'd path
 
 ## "nav back" - current nav's path
+
+## ?
+
+add last/first command to list, and run on complete of "az"

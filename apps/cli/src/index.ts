@@ -1,20 +1,13 @@
-const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+import runCommand from './utils/runCommand';
 
-const hiBye = async () => {
-  console.log('Hi');
-  await wait(1000);
-  console.log(process.argv);
-  await wait(1000);
-  console.log('Bye');
-};
-
-const printEcho = () => {
-  console.log('ls');
-};
+const argv = process.argv.slice(2);
 
 const main = async () => {
-  await hiBye();
-  await printEcho();
+  const [command, ...args] = argv;
+  if (command) {
+    const commandResult = await runCommand(command, args);
+  }
+  // console.log({ command, args, argv });
 };
 
 main();

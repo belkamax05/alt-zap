@@ -1,8 +1,5 @@
 #!/bin/zsh
-
-AZ_DEBUG=0
-
-for module_name in defines/_ functions/_ handlers/_ alias/_; do
+for module_name in defines/_ functions/_ handlers/_; do
     source "$AZ_ROOT/system/$module_name.zsh"
 done
 
