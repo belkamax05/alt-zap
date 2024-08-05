@@ -6,13 +6,33 @@ function az-cli() {
         fi
         return 0
     fi
-    if [ "$1" = "-p" ] || [ "$1" = "proxy" ]; then
-        az cli-proxy "${@:2}"
-        return 0
+    # if [ "$1" = "-p" ] || [ "$1" = "proxy" ]; then
+    #     # az cli-proxy "${@:2}"
+    #     return 0
+    # fi
+    # if [ "$1" = "-ps" ] || [ "$1" = "proxy-silent" ]; then
+    #     # az cli-proxy-silent "${@:2}"
+    #     return 0
+    # fi
+    # node "$AZ_ROOT/dist/apps/cli/index.cjs" "$@"
+    local scriptResult=$(FORCE_COLOR=1 node "$AZ_ROOT/dist/apps/cli/index.cjs" "$@" | tee /dev/tty)
+    local lastOutputLine=$(echo "${scriptResult}" | tail -n 1)
+    if [[ "${lastOutputLine}" == "> "* ]]; then
+        eval "${lastOutputLine:2}"
     fi
-    if [ "$1" = "-ps" ] || [ "$1" = "proxy-silent" ]; then
-        az cli-proxy-silent "${@:2}"
-        return 0
-    fi
-    node "$AZ_ROOT/dist/apps/cli/index.cjs" "$@"
 }
+
+# function az-cli-proxy() {
+#     local scriptResult=$(FORCE_COLOR=1 az cli "$@" | tee /dev/tty)
+#     local lastOutputLine=$(echo "${scriptResult}" | tail -n 1)
+#     azDebug "lastOutputLine: ${lastOutputLine}"
+#     if [[ "${lastOutputLine}" == "> "* ]]; then
+#         eval "${lastOutputLine:2}"
+#     fi
+# }
+# function az-cli-proxy-silent() {
+#     local scriptResult=$(az cli "$@")
+#     local lastOutputLine=$(echo "${scriptResult}" | tail -n 1)
+#     azDebug "lastOutputLine: ${lastOutputLine}"
+#     eval "${lastOutputLine}"
+# }

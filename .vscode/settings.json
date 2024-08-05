@@ -1,0 +1,44 @@
+{
+  "prettier.configPath": ".prettierrc",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[scss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "javascript.preferences.importModuleSpecifier": "shortest"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "typescript.preferences.importModuleSpecifier": "shortest"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "typescript.preferences.importModuleSpecifier": "shortest"
+  },
+  "search.exclude": {
+    "**-lock.json": true,
+    "**/*.lock": true,
+    "**/*.log": true,
+    "**/*.map": true,
+    "**/*.snap": true,
+    "**/build": true,
+    "**/coverage": true,
+    "**/dist": true,
+    "**/junit": true,
+    "**/.yarn": true,
+    "**/.nx": true
+  }
+}

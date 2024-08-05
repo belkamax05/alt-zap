@@ -28,5 +28,12 @@ function azFindCommand() {
         return 0
     fi
 
+    #? Script in js
+    if [[ -f "$AZ_ROOT/apps/cli/src/commands/$command.ts" ]]; then
+        azDebug "Include script $command.ts"
+        az cli "$@"
+        return 0
+    fi
+
     return 1
 }

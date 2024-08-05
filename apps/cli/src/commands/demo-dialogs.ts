@@ -1,8 +1,9 @@
 import { multiselect } from '@clack/prompts';
 import logCommand from '../utils/logCommand';
+import Command from '../types/app/Command';
 
-const demoDialogs = async (args: string[]) => {
-  console.log('Running demo-dialogs with args: ', args);
+const demoDialogs: Command = async () => {
+  // console.log('Running demo-dialogs with args: ', args);
 
   const commandToExecute = (await multiselect({
     message: 'Select additional tools.',
