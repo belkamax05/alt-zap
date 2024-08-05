@@ -7,9 +7,19 @@ const config: Command = async () => {
   await wait(1000);
   console.log('Config command running B');
   await wait(1000);
-  console.log('Config command running C');
+  logCommand('echo "Hello, World!"');
+  logCommand('ls');
   await wait(1000);
-  console.log('Config command running D');
+  console.log('Config command running C');
+  await wait(400);
+  process.stdout.write('3');
+  await wait(400);
+  process.stdout.write('2');
+  await wait(400);
+  process.stdout.write('1');
+  await wait(400);
+  process.stdout.write('...\n');
+  logCommand('echo "Goodbye, World!"');
   logCommand('ls');
 };
 

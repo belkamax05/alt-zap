@@ -16,10 +16,15 @@ function az-cli() {
     # fi
     # node "$AZ_ROOT/dist/apps/cli/index.cjs" "$@"
     local scriptResult=$(FORCE_COLOR=1 node "$AZ_ROOT/dist/apps/cli/index.cjs" "$@" | tee /dev/tty)
-    local lastOutputLine=$(echo "${scriptResult}" | tail -n 1)
-    if [[ "${lastOutputLine}" == "> "* ]]; then
-        eval "${lastOutputLine:2}"
-    fi
+    while IFS= read -r line; do
+        if [[ "${line}" == "> "* ]]; then
+            eval "${line:2}"
+        fi
+    done <<<"${scriptResult}"
+    # local lastOutputLine=$(echo "${scriptResult}" | tail -n 1)
+    # if [[ "${lastOutputLine}" == "> "* ]]; then
+    #     eval "${lastOutputLine:2}"
+    # fi
 }
 
 # function az-cli-proxy() {
