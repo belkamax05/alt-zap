@@ -1,4 +1,4 @@
-import logCommand from '../utils/logCommand';
+import logCommand from '../../utils/logCommand';
 
 const npkill = () => {
   logCommand('yarn dlx npkill');

@@ -6,25 +6,21 @@ function az-cli() {
         fi
         return 0
     fi
-    # if [ "$1" = "-p" ] || [ "$1" = "proxy" ]; then
-    #     # az cli-proxy "${@:2}"
-    #     return 0
-    # fi
-    # if [ "$1" = "-ps" ] || [ "$1" = "proxy-silent" ]; then
-    #     # az cli-proxy-silent "${@:2}"
-    #     return 0
-    # fi
-    # node "$AZ_ROOT/dist/apps/cli/index.cjs" "$@"
+
+    # Run the node script and capture its output and exit code
     local scriptResult=$(FORCE_COLOR=1 node "$AZ_ROOT/dist/apps/cli/index.cjs" "$@" | tee /dev/tty)
+    local scriptCode=$?
     while IFS= read -r line; do
         if [[ "${line}" == "> "* ]]; then
             eval "${line:2}"
         fi
     done <<<"${scriptResult}"
-    # local lastOutputLine=$(echo "${scriptResult}" | tail -n 1)
-    # if [[ "${lastOutputLine}" == "> "* ]]; then
-    #     eval "${lastOutputLine:2}"
-    # fi
+
+    # Print the captured exit code
+    # echo "Process exit code: ${scriptCode}"
+
+    # Return the captured exit code
+    return ${scriptCode}
 }
 
 # function az-cli-proxy() {

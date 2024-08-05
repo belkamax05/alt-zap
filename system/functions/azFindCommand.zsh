@@ -29,11 +29,18 @@ function azFindCommand() {
     fi
 
     #? Script in js
-    if [[ -f "$AZ_ROOT/apps/cli/src/commands/$command.ts" ]]; then
-        azDebug "Include script $command.ts"
-        az cli "$@"
-        return 0
-    fi
+    # if [[ -f "$AZ_ROOT/apps/cli/src/commands/$command.ts" ]]; then
+    # azDebug "Include script $command.ts"
+    # az cli "$@"
+    # return 0
+    # fi
+    # az clix "$@"
+    # if [ $? -eq 0 ]; then
+    #     echo "Command found A: $command"
+    #     return 0
+    # fi
+    # echo "Command not found B: $command"
 
-    return 1
+    az cli "$@"
+    return 0
 }

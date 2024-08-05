@@ -1,12 +1,13 @@
 import programManager from './app/programManager';
 
 const main = async () => {
-  await programManager.run();
-  // const [command, ...args] = argv;
-  // if (command) {
-  //   const commandResult = await runCommand(command, args);
-  // }
-  // console.log({ command, args, argv });
+  try {
+    await programManager.run();
+    process.exit(0);
+  } catch (error) {
+    console.error(error);
+    process.exit(1);
+  }
 };
 
 main();
