@@ -1,9 +1,10 @@
-import * as p from '@clack/prompts';
+import { text } from '@clack/prompts';
+import { execSync } from 'child_process';
 import colors from 'colors';
 import Command from '../../types/app/Command';
 import getBranchDescription from '../../utils/git/getBranchDescription';
 
-const commit: Command = async () => {
+const commit: Command = async ({ program }) => {
   const { name, isFlowBranch, flowCategory, ticketNumber } =
     await getBranchDescription();
   const flowDetectedMessage = isFlowBranch ? ` (${colors.cyan('Flow')})` : '';
@@ -11,23 +12,12 @@ const commit: Command = async () => {
   const flowPreffix = isFlowBranch ? `${ticketNumber}: ${flowCategory}: ` : '';
   const initialValue = isFlowBranch ? flowPreffix : '';
   const placeholder = isFlowBranch ? `${flowPreffix}<message>` : '<message>';
-  console.log('TODO git commit with dialogs');
-  const message = await p.text({
+  const message = (await text({
     message: messageTitle,
     placeholder,
     initialValue,
-    // initialValue: 'Initial',
-    // defaultValue: 'Default',
-    // message: string;
-    // placeholder?: string;
-    // defaultValue?: string;
-    // initialValue?: string;
-    // name: 'message',
-    // validate: (value: string) => value.length > 0,
-  });
-  console.log({
-    message,
-  });
+  })) as string;
+  execSync(`git commit -m "${message}"`);
 };
 
 export default commit;
