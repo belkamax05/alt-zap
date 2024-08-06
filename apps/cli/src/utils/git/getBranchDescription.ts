@@ -1,8 +1,5 @@
-import { exec } from 'child_process';
-import { promisify } from 'util';
+import execAsync from '../exec/execAsync';
 import quantityOfCharacter from '../helpers/quantityOfCharacter';
-
-const execAsync = promisify(exec);
 
 const getBranchDescription = async () => {
   const { stdout } = await execAsync('git branch --show-current');
