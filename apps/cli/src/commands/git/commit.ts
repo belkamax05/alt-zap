@@ -6,7 +6,6 @@ import getBranchDescription from '../../utils/git/getBranchDescription';
 
 const commit: Command = async ({ command }) => {
   const [argsMessage] = command.args;
-  console.log({ argsMessage });
   const { name, isFlowBranch, flowCategory, ticketNumber } =
     await getBranchDescription();
   const flowDetectedMessage = isFlowBranch ? ` (${colors.cyan('Flow')})` : '';
