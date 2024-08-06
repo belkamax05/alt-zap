@@ -24,9 +24,8 @@ const push: Command = async () => {
     initialValue: false,
   });
   if (shouldPush) {
-    const { stdout: output, stderr: error } = await execAsync('git push');
-    console.log({ output, error });
-    log.message(output);
+    const { stderr: output } = await execAsync('git push');
+    log.info(output);
   }
 };
 
