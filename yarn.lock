@@ -41,6 +41,7 @@ __metadata:
     "@typescript-eslint/parser": "npm:^7.17.0"
     babel-jest: "npm:^29.7.0"
     chalk: "npm:^5.3.0"
+    colors: "npm:^1.4.0"
     concurrently: "npm:^8.2.2"
     cypress: "npm:^13.13.1"
     esbuild: "npm:^0.19.12"
@@ -5839,6 +5840,13 @@ __metadata:
   version: 2.0.20
   resolution: "colorette@npm:2.0.20"
   checksum: 10c0/e94116ff33b0ff56f3b83b9ace895e5bf87c2a7a47b3401b8c3f3226e050d5ef76cf4072fb3325f9dc24d1698f9b730baf4e05eeaf861d74a1883073f4c98a40
+  languageName: node
+  linkType: hard
+
+"colors@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "colors@npm:1.4.0"
+  checksum: 10c0/9af357c019da3c5a098a301cf64e3799d27549d8f185d86f79af23069e4f4303110d115da98483519331f6fb71c8568d5688fa1c6523600044fd4a54e97c4efb
   languageName: node
   linkType: hard
 
