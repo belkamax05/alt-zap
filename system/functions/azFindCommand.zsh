@@ -2,19 +2,19 @@ function azFindCommand() {
     azDebug "[azFindCommand] ${AZ_C_YELLOW}$@${AZ_C_RESET}"
 
     local command="$1"
-    if [[ -f "$AZ_ROOT/system/modules/az-$command.zsh" ]]; then
+    if [[ -f "$AZ_DIR/system/modules/az-$command.zsh" ]]; then
         azIncludeModule "$command" "${@:2}"
         azRunModule "$command" "${@:2}"
         return 0
     fi
 
     #? System Scripts
-    if [[ -f "$AZ_ROOT/system/scripts/$command" ]]; then
+    if [[ -f "$AZ_DIR/system/scripts/$command" ]]; then
         azDebug "Include script $command"
         azInclude "system/scripts/$command"
         return 0
     fi
-    if [[ -f "$AZ_ROOT/system/scripts/$command.zsh" ]]; then
+    if [[ -f "$AZ_DIR/system/scripts/$command.zsh" ]]; then
         azDebug "Include script $command.zsh"
         azInclude "system/scripts/$command.zsh"
         return 0
@@ -29,7 +29,7 @@ function azFindCommand() {
     fi
 
     #? Script in js
-    # if [[ -f "$AZ_ROOT/apps/cli/src/commands/$command.ts" ]]; then
+    # if [[ -f "$AZ_DIR/apps/cli/src/commands/$command.ts" ]]; then
     # azDebug "Include script $command.ts"
     # az cli "$@"
     # return 0

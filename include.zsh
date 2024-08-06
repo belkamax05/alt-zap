@@ -1,2 +1,5 @@
-export AZ_ROOT=$(dirname "${(%):-%N}")
-source "$AZ_ROOT/system/include.zsh"
+export AZ_DIR=$(dirname "${(%):-%N}")
+if [ -z "${AZ_CONFIG_DIR}" ]; then
+  export AZ_CONFIG_DIR="$HOME/.az"
+fi
+source "$AZ_DIR/system/include.zsh"

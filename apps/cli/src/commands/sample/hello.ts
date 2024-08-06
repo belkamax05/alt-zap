@@ -1,4 +1,4 @@
-import Command from '../types/app/Command';
+import Command from '../../types/app/Command';
 
 const hello: Command = () => {
   console.log('Hello, world!');

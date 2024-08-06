@@ -1,5 +1,5 @@
 function azInclude() {
-    local includeFile="$AZ_ROOT/$1"
+    local includeFile="$AZ_DIR/$1"
     if [ -f "$includeFile" ]; then
         source "$includeFile"
     else

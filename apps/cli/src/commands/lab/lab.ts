@@ -1,6 +1,6 @@
-import Command from '../types/app/Command';
-import logCommand from '../utils/logCommand';
-import wait from '../utils/wait';
+import Command from '../../types/app/Command';
+import logCommand from '../../utils/logCommand';
+import wait from '../../utils/wait';
 
 const lab: Command = async () => {
   console.log('Lab command running A');

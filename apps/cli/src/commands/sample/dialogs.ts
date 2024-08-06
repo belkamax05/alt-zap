@@ -1,6 +1,6 @@
 import { multiselect } from '@clack/prompts';
-import logCommand from '../utils/logCommand';
-import Command from '../types/app/Command';
+import Command from '../../types/app/Command';
+import logCommand from '../../utils/logCommand';
 
 const demoDialogs: Command = async () => {
   // console.log('Running demo-dialogs with args: ', args);

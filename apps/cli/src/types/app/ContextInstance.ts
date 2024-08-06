@@ -1,4 +1,5 @@
 import CommandInstance from './CommandInstance';
+import ProgramInstance from './ProgramInstance';
 
 class ContextInstance {
   private commands: CommandInstance[];
@@ -40,6 +41,19 @@ class ContextInstance {
   takeCommandLast(): CommandInstance | undefined {
     return this.commands.pop();
   }
+
+  run = async (program: ProgramInstance): Promise<void> => {
+    // console.log('ContextManager run', program.argv);
+    const command = this.takeCommand();
+    if (command) {
+      await command.run(program, this, command);
+    }
+    const remainCommands = this.getCommands();
+    if (remainCommands.length > 0) {
+      // console.log('Remain: ', remainCommands);
+      return await this.run(program);
+    }
+  };
 }
 
 export default ContextInstance;

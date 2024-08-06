@@ -1,14 +1,20 @@
 function az-cli() {
-    if [ "$1" = "-b" ] || [ "$1" = "build" ]; then
-        az cli-build
+    if [ "$1" = "-b" ] || [ "$1" = "--build" ] || [ "$1" = "build" ]; then
+        azBuild
         if [ -n "$2" ]; then
             az cli "${@:2}"
         fi
         return 0
     fi
 
+    # Prevents command execution (> "command").
+    if [ "$1" = "-n" ] || [ "$1" = "--no-run" ]; then
+        az cli "${@:2}" >/dev/null
+        return 0
+    fi
+
     # Run the node script and capture its output and exit code
-    local scriptResult=$(FORCE_COLOR=1 node "$AZ_ROOT/dist/apps/cli/index.cjs" "$@" | tee /dev/tty)
+    local scriptResult=$(FORCE_COLOR=1 node "$AZ_DIR/dist/apps/cli/index.cjs" "$@" | tee /dev/tty)
     local scriptCode=$?
     while IFS= read -r line; do
         if [[ "${line}" == "> "* ]]; then

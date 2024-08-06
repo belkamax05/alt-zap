@@ -19,7 +19,7 @@ function azRunFile() {
             return 0
         elif [ "$fileExtension" = "ts" ]; then
             azDebug "Include shell script $filePath"
-            "$AZ_ROOT/node_modules/.bin/ts-node" "$filePath"
+            "$AZ_DIR/node_modules/.bin/ts-node" "$filePath"
             return 0
         fi
     fi
