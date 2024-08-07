@@ -1,10 +1,10 @@
+import getBranchDescription from '@az/utils/git/getBranchDescription';
 import Command from '../../types/app/Command';
-import getBranchDescription from '../../utils/git/getBranchDescription';
 
 const about: Command = async () => {
   try {
-    const { name, isFlowBranch, ...rest } = await getBranchDescription();
-    console.log({ name, isFlowBranch, ...rest });
+    const { name, isFlow, ...rest } = await getBranchDescription();
+    console.log({ name, isFlow, ...rest });
   } catch (error) {
     console.error('Error fetching current branch:', error);
   }
