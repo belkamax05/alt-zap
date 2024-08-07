@@ -8,12 +8,13 @@ import Command from '../../types/app/Command';
 const push: Command = async () => {
   const { name: branchName } = await getBranchDescription();
   const commits = await getLocalCommits({ name: branchName });
-  if (!commits) {
+  if (commits.length === 0) {
     log.info(`No commits to push at branch '${colors.yellow(branchName)}'`);
     return;
   }
+
   log.info('Commits to be pushed:');
-  log.message(commits);
+  log.message(commits.join('\n'));
   const shouldPush = await confirm({
     message: 'Do you want to push these commits?',
     initialValue: false,

@@ -14,7 +14,7 @@ const getLocalCommits = async (options?: GetLocalCommitsProps) => {
   }
   const commitsCmd = `git log ${name} --not --remotes --oneline`;
   const { stdout: commits } = await execAsync(commitsCmd);
-  return commits;
+  return commits.trim().split('\n').filter(Boolean);
 };
 
 export default getLocalCommits;
