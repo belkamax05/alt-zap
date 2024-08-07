@@ -1,5 +1,5 @@
 function azBuild() {
     pushd $AZ_DIR >/dev/null
-    yarn build
+    yarn cli:build
     popd >/dev/null
 }

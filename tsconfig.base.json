@@ -16,8 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@az/types": ["libs/types/src/index.ts"],
-      "@az/ui": ["libs/ui/src/index.ts"],
-      "@az/utils": ["libs/utils/src/index.ts"]
+      "@az/ui/*": ["libs/ui/src/*"],
+      "@az/utils/*": ["libs/utils/src/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]
