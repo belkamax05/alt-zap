@@ -3,9 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "yarn cli:start",
-    "dev": "yarn cli:dev",
-    "build": "yarn cli:build",
+    "start": "yarn web:start",
+    "build": "yarn web:build",
     "// web": "",
     "web:start": "nx start web",
     "web:build": "nx build web",

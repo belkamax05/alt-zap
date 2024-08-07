@@ -1,13 +1,11 @@
-sts-debug "Installing Maven"
-
 # URL of the file to download
 URL="https://dlcdn.apache.org/maven/maven-3/3.9.7/binaries/apache-maven-3.9.7-bin.tar.gz"
 
 # Directory to download the file to
-DOWNLOAD_DIR="$STS_DIR/temp"
+DOWNLOAD_DIR="$AZ_CONFIG_DIR/temp"
 
 # Directory to extract the file to
-EXTRACT_DIR="$STS_USER_CONFIG_DIR/bin"
+EXTRACT_DIR="$AZ_CONFIG_DIR/bin"
 
 # Create the directories if they don't exist
 mkdir -p "$DOWNLOAD_DIR"

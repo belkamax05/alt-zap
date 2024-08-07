@@ -21,7 +21,7 @@ class CommandInstance {
     command: CommandInstance,
   ): Promise<void> => {
     const runCmd = await importCommand(command.name);
-    await runCmd({
+    await runCmd?.({
       program,
       context,
       command,

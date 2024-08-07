@@ -1,4 +1,4 @@
-export NVM_DIR="$STS_USER_CONFIG_BIN/.nvm"
+export NVM_DIR="$AZ_CONFIG_DIR/bin/.nvm"
 
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 mkdir -p "$NVM_DIR"

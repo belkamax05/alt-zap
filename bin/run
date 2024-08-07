@@ -1,0 +1,25 @@
+#!/usr/bin/env node
+
+(async () => {
+  const distIndexPath = '../dist/apps/cli/index.cjs';
+
+  const buildJs = () => {
+    const execSync = require('child_process').execSync;
+    execSync('yarn build', { stdio: 'inherit', cwd: __dirname });
+  };
+
+  const startJs = () => require(distIndexPath);
+
+  try {
+    startJs();
+  } catch (error) {
+    const distExist = require('fs').existsSync(distIndexPath);
+    if (!distExist) {
+      await buildJs();
+      await startJs();
+      return;
+    }
+    console.error(error);
+    process.exit(1);
+  }
+})();

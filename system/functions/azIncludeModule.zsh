@@ -1,6 +1,4 @@
 function azIncludeModule() {
-    azDebug "[azIncludeModule] args: $@"
-
     local command="$1"
     AZ_INCLUDE_GUARD="INCLUDED_${command//-/_}_ZSH"
     print -v AZ_GUARD_VALUE -- "${(P)AZ_INCLUDE_GUARD}" #? Comment temprorary to autoformat file

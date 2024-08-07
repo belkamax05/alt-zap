@@ -1,9 +1,12 @@
-export NVM_DIR="$STS_USER_CONFIG_BIN/.nvm"
+export NVM_DIR="$AZ_CONFIG_DIR/bin/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 
 autoload -U add-zsh-hook
 load-nvmrc() {
+    if [[ ":$PATH:" != *":$NVM_DIR/bin:"* ]]; then
+        export PATH="$NVM_DIR/bin:$PATH"
+    fi
     local node_version="$(nvm version)"
     local nvmrc_path="$(nvm_find_nvmrc)"
 

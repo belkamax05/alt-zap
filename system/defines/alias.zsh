@@ -7,3 +7,5 @@ alias up="az up"
 alias clr="clear"
 alias c="clear"
 alias dir='ls'
+
+# alias az-git-about="az cli git/about"

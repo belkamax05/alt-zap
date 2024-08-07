@@ -1,0 +1,3 @@
+function az-extend {
+    azExtend "$@"
+}

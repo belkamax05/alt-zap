@@ -1,23 +1,28 @@
 #!/bin/zsh
-for module_name in defines/_ functions/_ handlers/_; do
+
+#? Core plugins
+
+for module_name in defines/_ functions/_; do
     source "$AZ_DIR/system/$module_name.zsh"
 done
 
-for command in cli; do
+for command in nav cli here; do
+    eval "function $command() { az $command \$@; }"
     azIncludeModule "$command"
 done
 
-#? Plugin managers
-for plugin in zap; do
-    azIncludePlugin "$plugin"
+#? Vendor plugins
+
+source "$AZ_DIR/system/plugins/include.zsh"
+
+#? Projects load
+
+source "$AZ_CONFIG_DIR/include.zsh"
+
+#? Finalize load
+
+for module_name in handlers/_; do
+    source "$AZ_DIR/system/$module_name.zsh"
 done
 
-for plugin in "zsh-users/zsh-autosuggestions" "zsh-users/zsh-completions"; do
-    plug "$plugin"
-done
-# plug "zsh-users/zsh-autosuggestions" #? https://github.com/zsh-users/zsh-autosuggestions
-# plug "zsh-users/zsh-completions" #? https://github.com/zsh-users/zsh-completions
-
-for plugin in p10k lsd nvm; do
-    azIncludePlugin "$plugin"
-done
+source "$AZ_DIR/system/az.autocomplete.zsh"

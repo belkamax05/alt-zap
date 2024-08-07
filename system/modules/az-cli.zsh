@@ -14,7 +14,8 @@ function az-cli() {
     fi
 
     # Run the node script and capture its output and exit code
-    local scriptResult=$(FORCE_COLOR=1 node "$AZ_DIR/dist/apps/cli/index.cjs" "$@" | tee /dev/tty)
+    # local scriptResult=$(FORCE_COLOR=1 node "$AZ_DIR/dist/apps/cli/index.cjs" "$@" | tee /dev/tty)
+    local scriptResult=$(FORCE_COLOR=1 "$AZ_DIR/bin/run" "$@" | tee /dev/tty)
     local scriptCode=$?
     while IFS= read -r line; do
         if [[ "${line}" == "> "* ]]; then
