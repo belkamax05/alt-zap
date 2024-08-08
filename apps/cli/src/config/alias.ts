@@ -17,6 +17,7 @@ const alias = satisfiesLegacy(
     push: 'git/push',
     pull: 'git/pull',
     commit: 'git/commit',
+    changes: 'git/changes',
     //? sample
     ['colors-true']: 'sample/colors-true',
     delayed: 'sample/delayed',

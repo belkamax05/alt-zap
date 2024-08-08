@@ -1,4 +1,4 @@
-import { AnyObject } from '../types/generic/AnyObject';
+import { AnyObject } from '@az/types';
 
 /**
  *

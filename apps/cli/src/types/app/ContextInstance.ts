@@ -2,56 +2,60 @@ import CommandInstance from './CommandInstance';
 import ProgramInstance from './ProgramInstance';
 
 class ContextInstance {
-  private commands: CommandInstance[];
+  public commands: CommandInstance[];
+  public program: ProgramInstance;
 
-  constructor() {
+  constructor(program: ProgramInstance) {
     this.commands = [];
+    this.program = program;
   }
 
-  addCommand(command: CommandInstance): void;
-  addCommand(name: string, args?: string[]): void;
-  addCommand(commandOrName: CommandInstance | string, args?: string[]): void {
-    this.commands.push(
-      typeof commandOrName === 'string'
-        ? new CommandInstance(commandOrName, args)
-        : commandOrName,
+  addCommand(command: CommandInstance): void {
+    this.commands.push(command);
+    console.log(
+      '[ContextInstance] command added. Length: ',
+      this.commands.length,
     );
   }
 
-  addCommandTop(command: CommandInstance): void;
-  addCommandTop(name: string, args?: string[]): void;
-  addCommandTop(
-    commandOrName: CommandInstance | string,
-    args?: string[],
-  ): void {
-    this.commands.unshift(
-      typeof commandOrName === 'string'
-        ? new CommandInstance(commandOrName, args)
-        : commandOrName,
+  addCommandTop(command: CommandInstance): void {
+    this.commands.unshift(command);
+    console.log(
+      '[ContextInstance] command added. Length: ',
+      this.commands.length,
     );
   }
 
-  getCommands() {
-    return this.commands;
-  }
+  instantCommand = async (command: CommandInstance) =>
+    await command.run({
+      program: this.program,
+      context: this,
+    });
 
-  takeCommand(): CommandInstance | undefined {
-    return this.commands.shift();
-  }
-  takeCommandLast(): CommandInstance | undefined {
-    return this.commands.pop();
-  }
+  getFirstCommand = () => this.commands[0];
 
-  run = async (program: ProgramInstance): Promise<void> => {
-    // console.log('ContextManager run', program.argv);
-    const command = this.takeCommand();
+  removeFirstCommand = () => {
+    const removedItem = this.commands.shift();
+    console.log(
+      '[ContextInstance] command removed. Length: ',
+      this.commands.length,
+    );
+    return removedItem;
+  };
+
+  run = async (): Promise<void> => {
+    const command = this.getFirstCommand();
     if (command) {
-      await command.run(program, this, command);
+      console.log('[ContextInstance] command run', command.name);
+      await command.run({
+        program: this.program,
+        context: this,
+      });
+      this.removeFirstCommand();
     }
-    const remainCommands = this.getCommands();
-    if (remainCommands.length > 0) {
-      // console.log('Remain: ', remainCommands);
-      return await this.run(program);
+    if (this.commands.length > 0) {
+      console.log('[ContextInstance] remain');
+      return await this.run();
     }
   };
 }

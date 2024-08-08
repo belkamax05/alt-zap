@@ -1,30 +1,29 @@
+import { CommandBaseArgs } from '@az/types';
+import minimist from 'minimist';
 import alias from '../../config/alias';
 import importCommand from '../../utils/importCommand';
 import CommandOptions from './CommandOptions';
-import ContextInstance from './ContextInstance';
-import ProgramInstance from './ProgramInstance';
 
 class CommandInstance {
   public name: string;
-  public args: string[];
+  public args: CommandBaseArgs;
 
-  constructor(name: string, args?: string[]) {
-    const nameSelected = alias[name as keyof typeof alias] || name;
-    // console.log('commandInstance', { name: nameSelected, args });
+  constructor(argvOrArgs?: string[] | CommandBaseArgs) {
+    this.args = Array.isArray(argvOrArgs) ? minimist(argvOrArgs) : argvOrArgs;
+    const [argsName] = this.args._;
+    const nameSelected = alias[argsName as keyof typeof alias] || argsName;
     this.name = nameSelected;
-    this.args = args || [];
   }
 
-  run = async (
-    program: ProgramInstance,
-    context: ContextInstance,
-    command: CommandInstance,
-  ): Promise<void> => {
-    const runCmd = await importCommand(command.name);
+  run = async ({
+    program,
+    context,
+  }: Omit<CommandOptions, 'command'>): Promise<void> => {
+    const runCmd = await importCommand(this.name);
     await runCmd?.({
       program,
       context,
-      command,
+      command: this,
     } as CommandOptions);
   };
 }
