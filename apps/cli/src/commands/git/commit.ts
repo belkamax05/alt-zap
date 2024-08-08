@@ -9,9 +9,13 @@ import colors from 'colors';
 import Command from '../../types/app/Command';
 
 const commit: Command = async ({ command }) => {
-  const { message: argsMessage } = command.args as CommandBaseArgs & {
-    message: string;
-  };
+  const _secParam = command.args._[1];
+  const { message: _argsMessage, m: _argsM } =
+    command.args as CommandBaseArgs & {
+      message: string;
+      m: string;
+    };
+  const argsMessage = _argsMessage || _argsM || _secParam;
 
   const stagedFiles = await getFilesDiff({ cached: true });
   if (stagedFiles.length === 0) {
