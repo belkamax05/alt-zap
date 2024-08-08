@@ -1,12 +1,14 @@
 import execCommit from '@az/utils/git/execCommit';
+import formatFilesList from '@az/utils/git/format/formatFilesList';
 import getBranchDescription from '@az/utils/git/getBranchDescription';
 import getFilesDiff from '@az/utils/git/getFilesDiff';
+import formatCommand from '@az/utils/helpers/format/formatCommand';
 import { log, text } from '@clack/prompts';
 import colors from 'colors';
 import Command from '../../types/app/Command';
 
 const commit: Command = async ({ command }) => {
-  const [argsMessage] = command.args;
+  const { message: argsMessage } = command.args;
 
   const stagedFiles = await getFilesDiff({ cached: true });
   if (stagedFiles.length === 0) {
@@ -21,6 +23,11 @@ const commit: Command = async ({ command }) => {
   }
 
   const { name, isFlow, flow, ticketNumber } = await getBranchDescription();
+
+  log.info(`Commit for branch '${formatCommand(name)}':`);
+  log.info('Staged files:');
+  log.message(formatFilesList(stagedFiles));
+
   const flowDetectedMessage = isFlow ? ` (${colors.cyan('Flow')})` : '';
   const messageTitle = `Enter commit message for branch '${colors.yellow(name)}'${flowDetectedMessage}:`;
   const flowPreffix = isFlow ? `${ticketNumber}: ${flow.flowCategory}: ` : '';
