@@ -1,4 +1,5 @@
 import execAsync from '@az/utils/exec/execAsync';
+import formatCommitsList from '@az/utils/git/format/formatCommitsList';
 import getBranchDescription from '@az/utils/git/getBranchDescription';
 import getLocalCommits from '@az/utils/git/getLocalCommits';
 import { confirm, log } from '@clack/prompts';
@@ -14,7 +15,7 @@ const push: Command = async () => {
   }
 
   log.info('Commits to be pushed:');
-  log.message(commits.join('\n'));
+  log.message(formatCommitsList(commits));
   const shouldPush = await confirm({
     message: 'Do you want to push these commits?',
     initialValue: false,
