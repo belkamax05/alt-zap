@@ -1,14 +1,17 @@
+import { CommandBaseArgs } from '@az/types';
 import execCommit from '@az/utils/git/execCommit';
 import formatFilesList from '@az/utils/git/format/formatFilesList';
 import getBranchDescription from '@az/utils/git/getBranchDescription';
 import getFilesDiff from '@az/utils/git/getFilesDiff';
 import formatCommand from '@az/utils/helpers/format/formatCommand';
-import { log, text } from '@clack/prompts';
+import { isCancel, log, text } from '@clack/prompts';
 import colors from 'colors';
 import Command from '../../types/app/Command';
 
 const commit: Command = async ({ command }) => {
-  const { message: argsMessage } = command.args;
+  const { message: argsMessage } = command.args as CommandBaseArgs & {
+    message: string;
+  };
 
   const stagedFiles = await getFilesDiff({ cached: true });
   if (stagedFiles.length === 0) {
@@ -40,6 +43,12 @@ const commit: Command = async ({ command }) => {
       placeholder,
       initialValue,
     })) as string);
+
+  const canceled = isCancel(message);
+  if (canceled) {
+    log.info('Commit canceled.');
+    return;
+  }
   await execCommit({ message });
 };
 
