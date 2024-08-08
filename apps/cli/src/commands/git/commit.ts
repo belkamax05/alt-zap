@@ -1,7 +1,6 @@
 import execCommit from '@az/utils/git/execCommit';
 import getBranchDescription from '@az/utils/git/getBranchDescription';
-import getStagedFiles from '@az/utils/git/getStagedFiles';
-import getUnstagedFiles from '@az/utils/git/getUnstagedFiles';
+import getFilesDiff from '@az/utils/git/getFilesDiff';
 import { log, text } from '@clack/prompts';
 import colors from 'colors';
 import Command from '../../types/app/Command';
@@ -9,9 +8,9 @@ import Command from '../../types/app/Command';
 const commit: Command = async ({ command }) => {
   const [argsMessage] = command.args;
 
-  const stagedFiles = await getStagedFiles();
+  const stagedFiles = await getFilesDiff({ cached: true });
   if (stagedFiles.length === 0) {
-    const unstagedFiles = await getUnstagedFiles();
+    const unstagedFiles = await getFilesDiff({});
     const unstagedLen = unstagedFiles.length;
     const unstagedMessage =
       unstagedLen > 0

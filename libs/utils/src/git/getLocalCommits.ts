@@ -1,3 +1,4 @@
+import { GitCommitListItem } from '@az/types';
 import execAsync from '../exec/execAsync';
 import getBranchDescription from './getBranchDescription';
 
@@ -6,7 +7,9 @@ interface GetLocalCommitsProps {
   name?: string;
 }
 
-const getLocalCommits = async (options?: GetLocalCommitsProps) => {
+const getLocalCommits = async (
+  options?: GetLocalCommitsProps,
+): Promise<GitCommitListItem[]> => {
   let { name } = options || {};
   if (!name) {
     const { name: branchDescriptionName } = await getBranchDescription();
@@ -14,7 +17,14 @@ const getLocalCommits = async (options?: GetLocalCommitsProps) => {
   }
   const commitsCmd = `git log ${name} --not --remotes --oneline`;
   const { stdout: commits } = await execAsync(commitsCmd);
-  return commits.trim().split('\n').filter(Boolean);
+  return commits
+    .trim()
+    .split('\n')
+    .filter(Boolean)
+    .map((commit): GitCommitListItem => {
+      const [hash, message] = commit.split(' ');
+      return { hash, message };
+    });
 };
 
 export default getLocalCommits;
