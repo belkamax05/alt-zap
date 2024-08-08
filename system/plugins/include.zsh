@@ -1,7 +1,7 @@
 #! Plugin managers
 #? zap manager - https://github.com/zap-zsh/zap
 for plugin in zap; do
-    azIncludePlugin "$plugin"
+    az include-plugin "$plugin"
 done
 
 #! Zap plugins
@@ -12,5 +12,5 @@ for plugin in "zsh-users/zsh-autosuggestions" "zsh-users/zsh-completions"; do
 done
 
 for plugin in p10k lsd nvm mvn fzf; do
-    azIncludePlugin "$plugin"
+    az include-plugin "$plugin"
 done

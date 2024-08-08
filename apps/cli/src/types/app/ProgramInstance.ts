@@ -4,11 +4,11 @@ import CommandInstance from './CommandInstance';
 import ContextInstance from './ContextInstance';
 
 class ProgramInstance {
-  public argv: string[];
-  public args: ProgramBaseArgs;
+  readonly argv: string[];
+  readonly args: ProgramBaseArgs;
   constructor(argv: string[]) {
     this.argv = argv;
-    this.args = minimist(argv);
+    this.args = minimist(this.argv);
     console.log('[ProgramInstance] Argv:', this.argv);
     console.log('[ProgramInstance] Args:', this.args);
     this.contexts = [];
@@ -41,7 +41,7 @@ class ProgramInstance {
   };
 
   run = async () => {
-    console.log('[ProgramInstance] run. Args: ', this.argv);
+    console.log('[ProgramInstance] run. Argv: ', this.argv);
 
     const context = this.getFirstContext();
     if (context) {

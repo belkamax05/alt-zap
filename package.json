@@ -11,7 +11,8 @@
     "// cli": "",
     "cli:dev": "yarn cli:build && yarn cli:start",
     "cli:start": "node dist/apps/cli/index.cjs",
-    "cli:build": "nx build cli",
+    "cli:build": "nx build cli && yarn cli:postbuild",
+    "cli:postbuild": "cp dist/apps/cli/index.cjs dist/cli.cjs",
     "// misc": "",
     "nx": "nx",
     "graph": "nx dep-graph"

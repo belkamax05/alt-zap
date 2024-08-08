@@ -1,4 +1,4 @@
-function azExtendNav {
+function az-extend-nav {
     # echo "azExtendNav params: $0, $1, $2, $3"
     local cmd="$1"
     local dir="$2"

@@ -1,1 +1,1 @@
-export AZ_DEBUG=0
+export AZ_DEBUG=1

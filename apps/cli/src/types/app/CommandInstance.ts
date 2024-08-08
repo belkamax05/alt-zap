@@ -5,11 +5,13 @@ import importCommand from '../../utils/importCommand';
 import CommandOptions from './CommandOptions';
 
 class CommandInstance {
-  public name: string;
-  public args: CommandBaseArgs;
+  readonly name: string;
+  readonly argv: string[];
+  readonly args: CommandBaseArgs;
 
-  constructor(argvOrArgs?: string[] | CommandBaseArgs) {
-    this.args = Array.isArray(argvOrArgs) ? minimist(argvOrArgs) : argvOrArgs;
+  constructor(argv?: string[]) {
+    this.argv = argv || [];
+    this.args = minimist(this.argv);
     const [argsName] = this.args._;
     const nameSelected = alias[argsName as keyof typeof alias] || argsName;
     this.name = nameSelected;

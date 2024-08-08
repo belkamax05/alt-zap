@@ -1,5 +1,5 @@
 #!/bin/zsh
-
+local AZ_START_TIME=$(date +%s)
 #? Core plugins
 
 for module_name in defines/_ functions/_; do
@@ -8,7 +8,7 @@ done
 
 for command in nav cli here; do
     eval "function $command() { az $command \$@; }"
-    azIncludeModule "$command"
+    az include-module "$command"
 done
 
 #? Vendor plugins
@@ -26,3 +26,5 @@ for module_name in handlers/_; do
 done
 
 source "$AZ_DIR/system/az.autocomplete.zsh"
+local AZ_END_TIME=$(date +%s)
+azDebug "az.sh loaded in $((AZ_END_TIME - AZ_START_TIME)) seconds"

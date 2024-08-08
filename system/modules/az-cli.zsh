@@ -1,6 +1,6 @@
 function az-cli() {
     if [ "$1" = "-b" ] || [ "$1" = "--build" ] || [ "$1" = "build" ]; then
-        azBuild
+        az build
         if [ -n "$2" ]; then
             az cli "${@:2}"
         fi
@@ -19,7 +19,8 @@ function az-cli() {
     local scriptCode=$?
     while IFS= read -r line; do
         if [[ "${line}" == "> "* ]]; then
-            eval "${line:2}"
+            echo "Executing: ${line:2}. TODO (not to use this feature)"
+            # eval "${line:2}"
         fi
     done <<<"${scriptResult}"
 

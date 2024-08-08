@@ -1,3 +1,8 @@
 function az-extend {
-    azExtend "$@"
+    if [ "$1" = "nav" ]; then
+        shift
+        az extend-nav "$@"
+    else
+        echo "Unknown extend command $1"
+    fi
 }
