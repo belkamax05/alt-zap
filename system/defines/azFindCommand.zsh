@@ -1,5 +1,5 @@
 function azFindCommand() {
-    azDebug "[azFindCommand] ${AZ_C_YELLOW}$@${AZ_C_RESET}"
+    azDebug "${AZ_C_CYAN}[azFindCommand]${AZ_C_RESET} ${AZ_C_YELLOW}$@${AZ_C_RESET}"
 
     local command="$1"
     if [[ -f "$AZ_DIR/system/modules/az-$command.zsh" ]]; then

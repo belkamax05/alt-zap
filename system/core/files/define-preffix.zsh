@@ -1,5 +1,3 @@
-# export AZ_PREFFIX="𝓐⚡"
-# export AZ_PREFFIX="[AltZap:sh]"
 export AZ_PREFFIX="⌥⎇ sh "
 
 export AZ_PREFFIX_ECHO="${AZ_C_CYAN}$AZ_PREFFIX${AZ_C_RESET} 💬"
@@ -7,7 +5,3 @@ export AZ_PREFFIX_ERROR="${AZ_C_ERROR}$AZ_PREFFIX${AZ_C_RESET} ❌"
 export AZ_PREFFIX_SUCCESS="${AZ_C_CYAN}$AZ_PREFFIX${AZ_C_RESET} ✅"
 export AZ_PREFFIX_INFO="${AZ_C_CYAN}$AZ_PREFFIX${AZ_C_RESET} ℹ️"
 export AZ_PREFFIX_DEBUG="${AZ_C_DEBUG}$AZ_PREFFIX${AZ_C_RESET} 🚧"
-
-# export AZ_PREFFIX_ECHO="${AZ_C_CYAN}[AltZap]${AZ_C_RESET}"
-# export AZ_PREFFIX_ERROR="$AZ_PREFFIX${AZ_C_CYAN}[AltZap:${AZ_C_DARK_RED}ERROR${AZ_C_CYAN}]${AZ_C_RESET}"
-# export AZ_PREFFIX_DEBUG="${AZ_C_CYAN}[AltZap:${AZ_C_MAGENTA}DEBUG${AZ_C_CYAN}]${AZ_C_RESET}"

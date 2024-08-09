@@ -5,7 +5,7 @@
 
   const buildCli = () => {
     const execSync = require('child_process').execSync;
-    execSync('yarn cli:build', { stdio: 'inherit', cwd: __dirname });
+    execSync('yarn cli:build', { stdio: 'ignore' /*inherit*/, cwd: __dirname });
   };
 
   const runCli = () => require(distIndexPath);

@@ -307,6 +307,38 @@ var init_error = __esm({
   }
 });
 
+// apps/cli/src/commands/debug/off.ts
+var off_exports = {};
+__export(off_exports, {
+  default: () => off_default
+});
+var debugOff, off_default;
+var init_off = __esm({
+  "apps/cli/src/commands/debug/off.ts"() {
+    init_CommandInstance();
+    debugOff = async ({ context }) => {
+      context.addCommand(new CommandInstance_default(["config/set", "debug", "false"]));
+    };
+    off_default = debugOff;
+  }
+});
+
+// apps/cli/src/commands/debug/on.ts
+var on_exports = {};
+__export(on_exports, {
+  default: () => on_default
+});
+var debugOn, on_default;
+var init_on = __esm({
+  "apps/cli/src/commands/debug/on.ts"() {
+    init_CommandInstance();
+    debugOn = async ({ context }) => {
+      context.addCommand(new CommandInstance_default(["config/set", "debug", "true"]));
+    };
+    on_default = debugOn;
+  }
+});
+
 // apps/cli/src/commands/demo/context.ts
 var context_exports = {};
 __export(context_exports, {
@@ -1125,6 +1157,8 @@ var init_ = __esm({
       "../commands/config/print.ts": () => Promise.resolve().then(() => (init_print(), print_exports)),
       "../commands/config/set.ts": () => Promise.resolve().then(() => (init_set(), set_exports)),
       "../commands/debug/error.ts": () => Promise.resolve().then(() => (init_error(), error_exports)),
+      "../commands/debug/off.ts": () => Promise.resolve().then(() => (init_off(), off_exports)),
+      "../commands/debug/on.ts": () => Promise.resolve().then(() => (init_on(), on_exports)),
       "../commands/demo/context.ts": () => Promise.resolve().then(() => (init_context(), context_exports)),
       "../commands/fe/npkill.ts": () => Promise.resolve().then(() => (init_npkill(), npkill_exports)),
       "../commands/git/about.ts": () => Promise.resolve().then(() => (init_about(), about_exports)),

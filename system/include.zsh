@@ -4,34 +4,21 @@ local AZ_START_TIME=$(date +%s)
 
 export AZ_CONFIG_DIR="${AZ_CONFIG_DIR:-$HOME/.az}"
 
-if [ -f "$AZ_CONFIG_DIR/user-config.zsh" ]; then
-    source "$AZ_CONFIG_DIR/user-config.zsh"
-fi
+source "$AZ_DIR/system/core/include.zsh"
 
-for module_name in defines/_; do
-    source "$AZ_DIR/system/$module_name.zsh"
-done
-
+source "$AZ_DIR/system/defines/_.zsh"
 source "$AZ_DIR/system/modules/az.zsh"
+
 for command in nav cli here; do
-    eval "function $command() { az $command \$@; }"
-    az include-module "$command"
+    az load-module "$command"
+    az alias-module "$command"
 done
 
-#? Vendor plugins
+az load-user-config
+az include-plugins
+az load-user
+az load-handlers
+az load-autocomplete
 
-source "$AZ_DIR/system/plugins/include.zsh"
-
-#? Projects load
-
-source "$AZ_CONFIG_DIR/include.zsh"
-
-#? Finalize load
-
-for module_name in handlers/_; do
-    source "$AZ_DIR/system/$module_name.zsh"
-done
-
-source "$AZ_DIR/system/az.autocomplete.zsh"
 local AZ_END_TIME=$(date +%s)
-azDebug "az.sh loaded in $((AZ_END_TIME - AZ_START_TIME)) seconds"
+azDebug "${AZ_C_CYAN}[az.sh]${AZ_C_RESET} loaded in ${AZ_C_YELLOW}$((AZ_END_TIME - AZ_START_TIME))${AZ_C_RESET} seconds"
