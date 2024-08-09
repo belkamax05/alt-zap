@@ -1,5 +1,9 @@
 function az-build() {
     pushd $AZ_DIR >/dev/null
-    yarn cli:build
+    if az-is-debug; then
+        yarn cli:build
+    else
+        yarn cli:build >/dev/null
+    fi
     popd >/dev/null
 }

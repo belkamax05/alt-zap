@@ -10,7 +10,8 @@ import Command from '../../types/app/Command';
 const initialise: Command = async ({ command }) => {
   const chalk = require('chalk');
   log.step(`Initialising configuration`);
-  const force = command.args.includes('--force') || command.args.includes('-f');
+  const { force: _force, f: _f } = command.args;
+  const force = _force || _f;
   const { AZ_CONFIG_DIR: configDir } = process.env;
   const configFilePath = `${configDir}/config.json`;
   if (!fs.existsSync(configDir)) {

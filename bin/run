@@ -3,20 +3,20 @@
 (async () => {
   const distIndexPath = '../dist/cli.cjs';
 
-  const buildJs = () => {
+  const buildCli = () => {
     const execSync = require('child_process').execSync;
     execSync('yarn cli:build', { stdio: 'inherit', cwd: __dirname });
   };
 
-  const startJs = () => require(distIndexPath);
+  const runCli = () => require(distIndexPath);
 
   try {
-    startJs();
+    runCli();
   } catch (error) {
     const distExist = require('fs').existsSync(distIndexPath);
     if (!distExist) {
-      await buildJs();
-      await startJs();
+      await buildCli();
+      await runCli();
       return;
     }
     console.error(error);

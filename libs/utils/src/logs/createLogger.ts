@@ -1,16 +1,9 @@
-interface LoggerInstance {
-  info: (message: string) => void;
-  error: (message: string) => void;
-  warn: (message: string) => void;
-  debug: (message: string) => void;
-}
+import LoggerInstance from './LoggerInstance';
+import { LoggerInstanceParams } from './types/LoggerInstanceParams';
 
-interface CreateLoggerParams {}
-const createLogger = (params: CreateLoggerParams): LoggerInstance => {
-  return {
-    info: console.info,
-    error: console.error,
-    warn: console.warn,
-    debug: console.debug,
-  };
+const createLogger = (params: LoggerInstanceParams): LoggerInstance => {
+  const logger = new LoggerInstance(params);
+  return logger;
 };
+
+export default createLogger;

@@ -11,11 +11,26 @@ export interface GetFilesDiffProps {
    * @default false - all files
    */
   removed?: boolean;
+  /**
+   * filter files by diff-filter
+   * @default undefined - no filter
+   * @see https://git-scm.com/docs/git-diff#Documentation/git-diff.txt---diff-filterACDMRTUXB82308203
+   * @example 'ACDMRTUXB'
+   */
+  diffFilter?: 'A' | 'C' | 'D' | 'M' | 'R' | 'T' | 'U' | 'X' | 'B';
 }
 
-const getFilesDiff = async ({ cached, removed }: GetFilesDiffProps) => {
+const getFilesDiff = async ({
+  cached,
+  removed,
+  diffFilter,
+}: GetFilesDiffProps) => {
   const cachedStr = cached ? ' --cached' : '';
-  const removedStr = removed ? ' --diff-filter=D' : '';
+  const removedStr = removed
+    ? ' --diff-filter=D'
+    : diffFilter
+      ? ` --diff-filter=${diffFilter}`
+      : '';
   const { stdout } = await execAsync(
     `git diff --name-only ${removedStr}${cachedStr}`,
   );

@@ -21,6 +21,11 @@ class CommandInstance {
     program,
     context,
   }: Omit<CommandOptions, 'command'>): Promise<void> => {
+    program.debug.debug('[CommandInstance] run', {
+      program,
+      context,
+      command: this,
+    });
     const runCmd = await importCommand(this.name);
     await runCmd?.({
       program,

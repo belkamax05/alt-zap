@@ -1,6 +1,7 @@
 import { CommandBaseArgs } from '@az/types';
 import execCommit from '@az/utils/git/execCommit';
 import formatFilesList from '@az/utils/git/format/formatFilesList';
+import getAllUnstagedFiles from '@az/utils/git/getAllUnstagedFiles';
 import getBranchDescription from '@az/utils/git/getBranchDescription';
 import getFilesDiff from '@az/utils/git/getFilesDiff';
 import formatCommand from '@az/utils/helpers/format/formatCommand';
@@ -19,7 +20,7 @@ const commit: Command = async ({ command }) => {
 
   const stagedFiles = await getFilesDiff({ cached: true });
   if (stagedFiles.length === 0) {
-    const unstagedFiles = await getFilesDiff({});
+    const unstagedFiles = await getAllUnstagedFiles();
     const unstagedLen = unstagedFiles.length;
     const unstagedMessage =
       unstagedLen > 0
@@ -28,7 +29,6 @@ const commit: Command = async ({ command }) => {
     log.info(`No staged files for commit.${unstagedMessage}`);
     return;
   }
-
   const { name, isFlow, flow, ticketNumber } = await getBranchDescription();
 
   log.info(`Commit for branch '${formatCommand(name)}':`);

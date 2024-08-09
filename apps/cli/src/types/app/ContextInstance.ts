@@ -10,9 +10,16 @@ class ContextInstance {
     this.program = program;
   }
 
+  get log() {
+    return this.program.log;
+  }
+  get debug() {
+    return this.program.debug;
+  }
+
   addCommand(command: CommandInstance): void {
     this.commands.push(command);
-    console.log(
+    this.debug.debug(
       '[ContextInstance] command added. Length: ',
       this.commands.length,
     );
@@ -20,7 +27,7 @@ class ContextInstance {
 
   addCommandTop(command: CommandInstance): void {
     this.commands.unshift(command);
-    console.log(
+    this.debug.debug(
       '[ContextInstance] command added. Length: ',
       this.commands.length,
     );
@@ -36,7 +43,7 @@ class ContextInstance {
 
   removeFirstCommand = () => {
     const removedItem = this.commands.shift();
-    console.log(
+    this.debug.debug(
       '[ContextInstance] command removed. Length: ',
       this.commands.length,
     );
@@ -46,7 +53,7 @@ class ContextInstance {
   run = async (): Promise<void> => {
     const command = this.getFirstCommand();
     if (command) {
-      console.log('[ContextInstance] command run', command.name);
+      this.debug.debug('[ContextInstance] command run', command.name);
       await command.run({
         program: this.program,
         context: this,
@@ -54,7 +61,7 @@ class ContextInstance {
       this.removeFirstCommand();
     }
     if (this.commands.length > 0) {
-      console.log('[ContextInstance] remain');
+      this.debug.debug('[ContextInstance] remain');
       return await this.run();
     }
   };
