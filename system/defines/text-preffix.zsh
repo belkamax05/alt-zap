@@ -1,5 +1,6 @@
 # export AZ_PREFFIX="𝓐⚡"
-export AZ_PREFFIX="[AltZap:sh]"
+# export AZ_PREFFIX="[AltZap:sh]"
+export AZ_PREFFIX="⌥⎇ sh "
 
 export AZ_PREFFIX_ECHO="${AZ_C_CYAN}$AZ_PREFFIX${AZ_C_RESET} 💬"
 export AZ_PREFFIX_ERROR="${AZ_C_ERROR}$AZ_PREFFIX${AZ_C_RESET} ❌"

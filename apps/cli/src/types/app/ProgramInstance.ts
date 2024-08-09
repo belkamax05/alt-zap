@@ -15,6 +15,8 @@ class ProgramInstance {
   readonly argv: string[];
   readonly args: ProgramBaseArgs;
 
+  public preffix: string = colors.cyan('⌥⎇ cli ');
+
   constructor(argv: string[]) {
     this.argv = argv;
     this.args = minimist(this.argv);
@@ -35,10 +37,14 @@ class ProgramInstance {
       this._userConfig = getUserConfig({ configPath: this.env.AZ_CONFIG_DIR });
     return this._userConfig;
   }
+  set userConfig(config: AzConfig) {
+    this._userConfig = config;
+  }
   get env() {
     if (!this._env) this._env = process.env as ProgramEnv;
     return this._env;
   }
+
   get log() {
     if (!this._log)
       this._log = new LoggerInstance({
@@ -51,7 +57,7 @@ class ProgramInstance {
     if (!this._debug)
       this._debug = new LoggerInstance({
         enabled: this.userConfig.debug,
-        preffix: colors.magenta('[AltZap:cli] 🚧'),
+        preffix: colors.magenta('⌥⎇:cli  🚧'),
       });
     return this._debug;
   }

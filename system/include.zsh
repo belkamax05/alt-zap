@@ -2,6 +2,10 @@
 local AZ_START_TIME=$(date +%s)
 #? Core plugins
 
+if [ -f "$AZ_CONFIG_DIR/user-config.zsh" ]; then
+    source "$AZ_CONFIG_DIR/user-config.zsh"
+fi
+
 for module_name in defines/_ functions/_; do
     source "$AZ_DIR/system/$module_name.zsh"
 done
