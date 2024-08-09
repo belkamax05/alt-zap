@@ -6,3 +6,10 @@ function az-is-debug() {
     fi
     return 1
 }
+function az-no-debug() {
+    if az-is-debug; then
+        return 1
+    else
+        return 0
+    fi
+}

@@ -1,0 +1,1 @@
+echo "\e[38;5;84mHello from hello.sh!\e[0m\n\n\e[38;5;81mSeveral files can be included with same command, but different extension.\nDefault is .sh, or first to be found. But feel free also to try 'sts hello.js' or 'sts hello.ts' to try out other extensions!!\e[0m"

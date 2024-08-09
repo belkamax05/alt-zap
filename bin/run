@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 (async () => {
-  const distIndexPath = '../dist/cli.cjs';
+  const distIndexPath = './cli.cjs';
 
   const buildCli = () => {
     const execSync = require('child_process').execSync;
