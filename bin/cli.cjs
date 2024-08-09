@@ -1047,22 +1047,6 @@ var init_poweroff = __esm({
   }
 });
 
-// apps/cli/src/commands/terminal/here.ts
-var here_exports = {};
-__export(here_exports, {
-  default: () => here_default
-});
-var here, here_default;
-var init_here = __esm({
-  "apps/cli/src/commands/terminal/here.ts"() {
-    init_logCommand();
-    here = () => {
-      logCommand_default(`cd ${process.env["AZ_DIR"]}`);
-    };
-    here_default = here;
-  }
-});
-
 // apps/cli/src/commands/terminal/load.ts
 var load_exports = {};
 __export(load_exports, {
@@ -1162,7 +1146,6 @@ var init_ = __esm({
       "../commands/start.ts": () => Promise.resolve().then(() => (init_start(), start_exports)),
       "../commands/system/envs.ts": () => Promise.resolve().then(() => (init_envs(), envs_exports)),
       "../commands/system/poweroff.ts": () => Promise.resolve().then(() => (init_poweroff(), poweroff_exports)),
-      "../commands/terminal/here.ts": () => Promise.resolve().then(() => (init_here(), here_exports)),
       "../commands/terminal/load.ts": () => Promise.resolve().then(() => (init_load(), load_exports)),
       "../commands/terminal/reload.ts": () => Promise.resolve().then(() => (init_reload(), reload_exports)),
       "../commands/terminal/restart.ts": () => Promise.resolve().then(() => (init_restart(), restart_exports)),

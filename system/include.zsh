@@ -2,14 +2,17 @@
 local AZ_START_TIME=$(date +%s)
 #? Core plugins
 
+export AZ_CONFIG_DIR="${AZ_CONFIG_DIR:-$HOME/.az}"
+
 if [ -f "$AZ_CONFIG_DIR/user-config.zsh" ]; then
     source "$AZ_CONFIG_DIR/user-config.zsh"
 fi
 
-for module_name in defines/_ functions/_; do
+for module_name in defines/_; do
     source "$AZ_DIR/system/$module_name.zsh"
 done
 
+source "$AZ_DIR/system/modules/az.zsh"
 for command in nav cli here; do
     eval "function $command() { az $command \$@; }"
     az include-module "$command"
