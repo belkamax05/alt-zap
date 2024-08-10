@@ -15,7 +15,9 @@ function azCoreCompile() {
         "$srcDir/functions-echo.zsh"
         "$srcDir/functions-source.zsh"
         "$srcDir/functions-run.zsh"
+        "$srcDir/functions-user.zsh"
         "$srcDir/module-az.zsh"
+        "$srcDir/handler-load-user.zsh"
     )
 
     for file in "${files[@]}"; do

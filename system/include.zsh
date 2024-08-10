@@ -9,7 +9,6 @@ for command in nav cli here; do
     az alias-module "$command"
 done
 
-az load-user-config
 az include-plugins
 az load-user
 az load-handlers

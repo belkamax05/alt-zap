@@ -1,4 +1,4 @@
-export AZ_CONFIG_DIR=${AZ_CONFIG_DIR:-"$HOME/.az"}
+export AZ_CONFIG_DIR="${AZ_CONFIG_DIR:-$HOME/.az}"
 export NVM_DIR=${NVM_DIR:-"$AZ_CONFIG_DIR/bin/.nvm"}
 export AZ_PLUGIN_DIR="$AZ_DIR/system/plugins"
 export AZ_CORE_COMPILED_PATH="$AZ_DIR/bin/core.zsh"
@@ -158,6 +158,13 @@ function azFindCommand() {
  az cli "$@"
  return 0
 }
+function azLoadUserConfig() {
+ if [ -f "$AZ_CONFIG_DIR/user-config.zsh" ]; then
+ source "$AZ_CONFIG_DIR/user-config.zsh"
+ else
+ azError "User config not found: $AZ_CONFIG_DIR/user-config.zsh"
+ fi
+}
 function az() {
  if [ -z "$1" ]; then
  echo "!az! Default view TODO replace"
@@ -171,3 +178,4 @@ function az() {
  azError "[az.zsh] Module '${AZ_C_YELLOW}$1${AZ_C_RESET}'${2:+ (arguments ${AZ_C_YELLOW}${@:2}${AZ_C_RESET})} could not be loaded. Does not exist or error prevents loading."
  return 1
 }
+azLoadUserConfig
