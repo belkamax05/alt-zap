@@ -2,12 +2,7 @@
 local AZ_START_TIME=$(date +%s)
 #? Core plugins
 
-export AZ_CONFIG_DIR="${AZ_CONFIG_DIR:-$HOME/.az}"
-
 source "$AZ_DIR/system/core/include.zsh"
-
-source "$AZ_DIR/system/defines/_.zsh"
-source "$AZ_DIR/system/modules/az.zsh"
 
 for command in nav cli here; do
     az load-module "$command"
