@@ -9,8 +9,9 @@ function azCoreCompile() {
         "$srcDir/define-paths.zsh"
         "$srcDir/define-colors.zsh"
         "$srcDir/define-preffix.zsh"
+        "$srcDir/check-user-config.zsh"
         "$srcDir/define-runtime.zsh"
-        "$srcDir/global-alias.zsh"
+        "$srcDir/define-alias.zsh"
         "$srcDir/functions-debug.zsh"
         "$srcDir/functions-echo.zsh"
         "$srcDir/functions-source.zsh"
@@ -18,6 +19,13 @@ function azCoreCompile() {
         "$srcDir/functions-user.zsh"
         "$srcDir/module-az.zsh"
         "$srcDir/handler-load-user.zsh"
+        "$srcDir/handler-bindings.zsh"
+        "$srcDir/handler-not-found.zsh"
+        "$srcDir/plugin-zap.zsh"
+        "$srcDir/autocomplete-init.zsh"
+        "$srcDir/autocomplete-az.zsh"
+        "$srcDir/autocomplete-nav.zsh"
+        "$srcDir/finalise-lab.zsh"
     )
 
     for file in "${files[@]}"; do

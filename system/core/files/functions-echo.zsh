@@ -1,5 +1,5 @@
 function azDebug() {
-    if [ "$AZ_DEBUG" -eq 0 ]; then
+    if azNoDebug; then
         return 0
     fi
     echo "$AZ_PREFFIX_DEBUG $@"

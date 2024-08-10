@@ -5,7 +5,6 @@ import fs from 'fs';
 import cloneDeep from 'lodash/cloneDeep';
 import path from 'path';
 import Command from '../../types/app/Command';
-import CommandInstance from '../../types/app/CommandInstance';
 
 const booleanParse = (value: string): boolean => {
   if (value === 'true') return true;
@@ -13,9 +12,10 @@ const booleanParse = (value: string): boolean => {
   return Boolean(value);
 };
 
-const set: Command = async ({ program, context }) => {
+const set: Command = async ({ program, context, command }) => {
   const currentConfig = program.userConfig;
-  const [_, propName, propValue] = program.args._;
+  const [_, propName, propValue] = command.args._;
+  console.log('set', program.args);
   const updatesInConfig: Partial<AzConfig> = {};
   if (propName && propValue) {
     const defaultValue = defaultConfig[propName];
@@ -31,7 +31,7 @@ const set: Command = async ({ program, context }) => {
       path.join(program.env.AZ_CONFIG_DIR, 'user-config.json'),
       JSON.stringify(newConfig, null, 2),
     );
-    context.addCommand(new CommandInstance(['config/convert-to-zsh']));
+    // context.addCommand(new CommandInstance(['config/convert-to-zsh']));
   }
 };
 

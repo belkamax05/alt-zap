@@ -1,13 +1,14 @@
-function az-is-debug() {
-    if [ "$AZ_DEBUG" -eq 1 ]; then
+function azIsDebug() {
+    if [ "$AZ_DEBUG" = "true" ]; then
         return 0
     fi
     return 1
 }
-function az-no-debug() {
-    if az-is-debug; then
+function azNoDebug() {
+    if azIsDebug; then
         return 1
     else
         return 0
     fi
 }
+alias azIsNotDebug='azNoDebug'
