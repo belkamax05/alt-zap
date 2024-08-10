@@ -13,6 +13,7 @@ function azCoreCompile() {
         "$srcDir/global-alias.zsh"
         "$srcDir/functions-debug.zsh"
         "$srcDir/functions-echo.zsh"
+        "$srcDir/functions-source.zsh"
     )
 
     for file in "${files[@]}"; do

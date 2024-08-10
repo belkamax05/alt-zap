@@ -1,8 +1,6 @@
 function azCoreInclude() {
     source "$AZ_DIR/system/core/files/define-paths.zsh"
 
-    echo "AZ_CORE_COMPILED_PATH: $AZ_CORE_COMPILED_PATH"
-
     if [ -f "$AZ_CORE_COMPILED_PATH" ]; then
         source "$AZ_CORE_COMPILED_PATH"
     else
