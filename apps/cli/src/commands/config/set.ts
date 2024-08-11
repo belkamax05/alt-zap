@@ -15,13 +15,11 @@ const booleanParse = (value: string): boolean => {
 const set: Command = async ({ program, context, command }) => {
   const currentConfig = program.userConfig;
   const [_, propName, propValue] = command.args._;
-  console.log('set', program.args);
   const updatesInConfig: Partial<AzConfig> = {};
   if (propName && propValue) {
     const defaultValue = defaultConfig[propName];
     const fixedValue =
       typeof defaultValue === 'boolean' ? booleanParse(propValue) : propValue;
-    console.log({ propValue, defaultValue, fixedValue });
     updatesInConfig[propName] = fixedValue;
   }
   const newConfig = mergeConfigs(cloneDeep(currentConfig), updatesInConfig);
