@@ -3,3 +3,13 @@
 /.yarn/plugins/**/* binary
 /.pnp.* binary linguist-generated
 /bun.lockb binary linguist-generated
+# Set the default behavior, in case people don't have core.autocrlf set.
+* text=auto
+
+# Declare files that will always have LF line endings on checkout.
+*.sh text eol=lf
+*.zsh text eol=lf
+
+# Binary files should be treated as binary and not modified.
+*.png binary
+*.jpg binary
