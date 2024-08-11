@@ -88,6 +88,10 @@ function azInfo() {
 function azEcho() {
  echo "$AZ_PREFFIX_ECHO $@"
 }
+function azErrorFunction() {
+ local name="$1"
+ azError "${AZ_C_CYAN}[$name]${AZ_C_RESET} ${@:2}"
+}
 function azGuardSet() {
  local name="$1"
  azTraceGuard "Guard set: '${AZ_C_YELLOW}$name${AZ_C_RESET}'"
@@ -105,10 +109,8 @@ function azGuardCheck() {
  AZ_GUARD="AZ_GUARD_${name//-/_}_ZSH"
  print -v AZ_GUARD_VALUE -- "${(P)AZ_GUARD}"
  if [ "$AZ_GUARD_VALUE" -eq 1 ]; then
- azTraceGuard "Guard for '${AZ_C_YELLOW}$name${AZ_C_RESET}' is set"
  return 1
  fi
- azTraceGuard "Guard for '${AZ_C_YELLOW}$name${AZ_C_RESET}' is unset"
  return 0
 }
 function azSource() {
@@ -138,44 +140,26 @@ function azSourceSystemPlugin() {
 }
 function azIncludeModule() {
  local command="$1"
- AZ_INCLUDE_GUARD="INCLUDED_${command//-/_}_ZSH"
- print -v AZ_GUARD_VALUE -- "${(P)AZ_INCLUDE_GUARD}" #? Comment temprorary to autoformat file
- #? System Modules
- if [[ -f "$AZ_DIR/system/modules/az-$command.zsh" && -z "$AZ_GUARD_VALUE" ]]; then
- azDebug "${AZ_C_CYAN}[azIncludeModule]${AZ_C_RESET} Initialize '${AZ_C_YELLOW}$command${AZ_C_RESET}' module"
- azSource "system/modules/az-$command.zsh"
- eval "$AZ_INCLUDE_GUARD=1"
+ local guardName="module_${command//-/_}"
+ azGuardCheck "$guardName"
+ if [ "$?" -eq 1 ]; then
+ # azDebugFunction "azIncludeModule" "Module '${AZ_C_YELLOW}$command${AZ_C_RESET}' is already included"
+ return 0
+ fi
+ if [[ -f "$AZ_DIR/system/modules/az-$command.zsh" ]]; then
+ azSourceSystemModule "az-$command.zsh"
+ azGuardSet "$guardName"
  fi
 }
-function azIncludeModule() {
+function azRunModule() {
  local command="$1"
- AZ_INCLUDE_GUARD="INCLUDED_${command//-/_}_ZSH"
- print -v AZ_GUARD_VALUE -- "${(P)AZ_INCLUDE_GUARD}" #? Comment temprorary to autoformat file
- #? System Modules
- if [[ -f "$AZ_DIR/system/modules/az-$command.zsh" && -z "$AZ_GUARD_VALUE" ]]; then
- azDebug "${AZ_C_CYAN}[azIncludeModule]${AZ_C_RESET} Initialize '${AZ_C_YELLOW}$command${AZ_C_RESET}' module"
- azSource "system/modules/az-$command.zsh"
- eval "$AZ_INCLUDE_GUARD=1"
- fi
-}
-function azRunModule() {
- print -v AZ_GUARD_VALUE -- "${(P)AZ_INCLUDE_GUARD}" #? Comment temprorary to autoformat file
- if [ "$AZ_GUARD_VALUE" = "1" ]; then
- azDebugFunction "azRunModule" "Run '${AZ_C_YELLOW}$command${AZ_C_RESET}' module"
+ local guardName="module_${command//-/_}"
+ azGuardCheck "$guardName"
+ if [ "$?" -eq 1 ]; then
  az-$command "${@:2}"
  return 0
  fi
- azError "[azRunModule] Runner for module '${AZ_C_YELLOW}$command${AZ_C_RESET}' was not found"
- return 1
-}
-function azRunModule() {
- print -v AZ_GUARD_VALUE -- "${(P)AZ_INCLUDE_GUARD}" #? Comment temprorary to autoformat file
- if [ "$AZ_GUARD_VALUE" = "1" ]; then
- azDebugFunction "azRunModule" "Run '${AZ_C_YELLOW}$command${AZ_C_RESET}' module"
- az-$command "${@:2}"
- return 0
- fi
- azError "[azRunModule] Runner for module '${AZ_C_YELLOW}$command${AZ_C_RESET}' was not found"
+ azErrorFunction "azRunModule" "Runner for module '${AZ_C_YELLOW}$command${AZ_C_RESET}' was not found"
  return 1
 }
 function azRunFile() {

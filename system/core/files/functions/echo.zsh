@@ -20,3 +20,7 @@ function azInfo() {
 function azEcho() {
     echo "$AZ_PREFFIX_ECHO $@"
 }
+function azErrorFunction() {
+    local name="$1"
+    azError "${AZ_C_CYAN}[$name]${AZ_C_RESET} ${@:2}"
+}
