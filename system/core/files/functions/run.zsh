@@ -1,7 +1,7 @@
 function azRunModule() {
     print -v AZ_GUARD_VALUE -- "${(P)AZ_INCLUDE_GUARD}" #? Comment temprorary to autoformat file
     if [ "$AZ_GUARD_VALUE" = "1" ]; then
-        azDebug "${AZ_C_CYAN}[azRunModule]${AZ_C_RESET} Run '${AZ_C_YELLOW}$command${AZ_C_RESET}' module"
+        azDebugFunction "azRunModule" "Run '${AZ_C_YELLOW}$command${AZ_C_RESET}' module"
         az-$command "${@:2}"
         return 0
     fi
@@ -41,8 +41,7 @@ function azRunFile() {
 }
 
 function azFindCommand() {
-    azDebug "${AZ_C_CYAN}[azFindCommand]${AZ_C_RESET} ${AZ_C_YELLOW}$@${AZ_C_RESET}"
-
+    azDebugFunction "azFindCommand" "${AZ_C_YELLOW}$@${AZ_C_RESET}"
     local command="$1"
     if [[ -f "$AZ_DIR/system/modules/az-$command.zsh" ]]; then
         azIncludeModule "$command" "${@:2}"
@@ -53,12 +52,12 @@ function azFindCommand() {
     #? System Scripts
     if [[ -f "$AZ_DIR/system/scripts/$command" ]]; then
         azDebug "Include script $command"
-        azInclude "system/scripts/$command"
+        azSource "system/scripts/$command"
         return 0
     fi
     if [[ -f "$AZ_DIR/system/scripts/$command.zsh" ]]; then
         azDebug "Include script $command.zsh"
-        azInclude "system/scripts/$command.zsh"
+        azSource "system/scripts/$command.zsh"
         return 0
     fi
 

@@ -12,9 +12,12 @@
         "$srcDir/initial/preffix.zsh"
         "$srcDir/initial/variables.zsh"
 
+        "$srcDir/functions/trace.zsh"
         "$srcDir/functions/debug.zsh"
         "$srcDir/functions/echo.zsh"
+        "$srcDir/functions/guard.zsh"
         "$srcDir/functions/source.zsh"
+        "$srcDir/functions/module.zsh"
         "$srcDir/functions/run.zsh"
         "$srcDir/functions/user.zsh"
 
@@ -44,6 +47,7 @@
                 echo "# File: ${file#$srcDir}" >>"$coreFile"
             fi
             cat "$file" >>"$coreFile"
+            echo "" >>"$coreFile"
         else
             echo "Error: Core file not found: $file" # TODO azError
         fi

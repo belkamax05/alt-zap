@@ -4,14 +4,26 @@ export NVM_DIR=${NVM_DIR:-"$AZ_CONFIG_DIR/bin/.nvm"}
 export AZ_PLUGIN_DIR="$AZ_DIR/system/plugins"
 export AZ_CORE_COMPILED_PATH="$AZ_DIR/bin/core.zsh"
 export AZ_CORE_COMPILED_MIN_PATH="$AZ_DIR/bin/core.min.zsh"
-export AZ_C_RESET="\033[0m"
-export AZ_C_BOLD="\033[1m"
 export AZ_C_CYAN="\033[38;5;51m" #00FFFF
 export AZ_C_DARK_RED="\033[38;5;196m" #FF3131
 export AZ_C_YELLOW="\033[38;5;226m" #FFFF00
 export AZ_C_HOTPINK="\033[38;5;199m" #FF00AF
 export AZ_C_GREEN="\033[38;5;46m" #00FF00
 export AZ_C_MAGENTA="\033[38;2;201;101;201m" #C965C9
+export AZ_C_WHITE="\033[38;5;231m" #FFFFFF
+export AZ_C_DARK_BLUE="\033[38;5;21m" #0000FF
+export AZ_C_DARK_GREEN="\033[38;5;22m" #00FF00
+export AZ_C_DARK_YELLOW="\033[38;5;58m" #FFFF00
+export AZ_C_DARK_CYAN="\033[38;5;37m" #00FFFF
+export AZ_C_DARK_MAGENTA="\033[38;5;90m" #FF00FF
+export AZ_C_DARK_WHITE="\033[38;5;255m" #FFFFFF
+export AZ_C_DARK_GRAY="\033[38;5;240m" #808080
+export AZ_C_DARK_ORANGE="\033[38;5;208m" #FFA500
+export AZ_C_DARK_PINK="\033[38;5;198m" #FF69B4
+export AZ_C_DARK_PURPLE="\033[38;5;57m" #800080
+export AZ_C_DARK_TURQUOISE="\033[38;5;44m" #40E0D0
+export AZ_C_RESET="\033[0m"
+export AZ_C_BOLD="\033[1m"
 export AZ_C_ERROR="$AZ_C_DARK_RED"
 export AZ_C_DEBUG="$AZ_C_MAGENTA"
 export AZ_PREFFIX="⌥⎇ sh "
@@ -22,6 +34,16 @@ export AZ_PREFFIX_INFO="${AZ_C_CYAN}$AZ_PREFFIX${AZ_C_RESET} ℹ️"
 export AZ_PREFFIX_DEBUG="${AZ_C_DEBUG}$AZ_PREFFIX${AZ_C_RESET} 🚧"
 export AZ_DEBUG=${AZ_DEBUG:-"false"}
 typeset -gA nav_list
+function azTraceGuard() {
+ azTrace "${AZ_C_CYAN}[Guard]${AZ_C_RESET} $@"
+}
+function azTraceSource() {
+ azTrace "${AZ_C_CYAN}[Source]${AZ_C_RESET} $@"
+}
+function azTraceFunction() {
+ local name="$1"
+ azTrace "${AZ_C_CYAN}[$name]${AZ_C_RESET} $@"
+}
 function azIsDebug() {
  if [ "$AZ_DEBUG" = "true" ]; then
  return 0
@@ -36,6 +58,18 @@ function azNoDebug() {
  fi
 }
 alias azIsNotDebug='azNoDebug'
+function azDebugSource() {
+ azDebug "${AZ_C_CYAN}[Source]${AZ_C_RESET} $@"
+}
+function azDebugFunction() {
+ local name="$1"
+ if [ "$name" = "azRunModule" ]; then
+ return 0
+ elif [ "$name" = "azFindCommand" ]; then
+ return 0
+ fi
+ azDebug "${AZ_C_CYAN}[$name]${AZ_C_RESET} ${@:2}"
+}
 function azDebug() {
  if azNoDebug; then
  return 0
@@ -54,12 +88,63 @@ function azInfo() {
 function azEcho() {
  echo "$AZ_PREFFIX_ECHO $@"
 }
-function azInclude() {
- local includeFile="$AZ_DIR/$1"
- if [ -f "$includeFile" ]; then
- source "$includeFile"
- else
- azError "Error: include file not found: $includeFile"
+function azGuardSet() {
+ local name="$1"
+ azTraceGuard "Guard set: '${AZ_C_YELLOW}$name${AZ_C_RESET}'"
+ AZ_GUARD="AZ_GUARD_${name//-/_}_ZSH"
+ eval "$AZ_GUARD=1"
+}
+function azGuardUnset() {
+ local name="$1"
+ azTraceGuard "Guard unset: '${AZ_C_YELLOW}$name${AZ_C_RESET}'"
+ AZ_GUARD="AZ_GUARD_${name//-/_}_ZSH"
+ eval "$AZ_GUARD=0"
+}
+function azGuardCheck() {
+ local name="$1"
+ AZ_GUARD="AZ_GUARD_${name//-/_}_ZSH"
+ print -v AZ_GUARD_VALUE -- "${(P)AZ_GUARD}"
+ if [ "$AZ_GUARD_VALUE" -eq 1 ]; then
+ azTraceGuard "Guard for '${AZ_C_YELLOW}$name${AZ_C_RESET}' is set"
+ return 1
+ fi
+ azTraceGuard "Guard for '${AZ_C_YELLOW}$name${AZ_C_RESET}' is unset"
+ return 0
+}
+function azSource() {
+ local file="$AZ_DIR/$1"
+ azTraceSource "${AZ_C_CYAN}[azSource]${AZ_C_RESET} Sourcing $file"
+ source "$file"
+}
+function azSourceSystem() {
+ local file="$AZ_DIR/system/$1"
+ azTraceSource "${AZ_C_CYAN}[azSourceSystem]${AZ_C_RESET} Sourcing $file"
+ source "$file"
+}
+function azSourceSystemLab() {
+ local file="$AZ_DIR/system/lab/$1"
+ azTraceSource "${AZ_C_CYAN}[azSourceSystemLab]${AZ_C_RESET} Sourcing $file"
+ source "$file"
+}
+function azSourceSystemModule() {
+ local file="$AZ_DIR/system/modules/$1"
+ azTraceSource "${AZ_C_CYAN}[azSourceSystemModule]${AZ_C_RESET} Sourcing $file"
+ source "$file"
+}
+function azSourceSystemPlugin() {
+ local file="$AZ_PLUGIN_DIR/$1"
+ azTraceSource "${AZ_C_CYAN}[azSourceSystemPlugin]${AZ_C_RESET} Sourcing $file"
+ source "$file"
+}
+function azIncludeModule() {
+ local command="$1"
+ AZ_INCLUDE_GUARD="INCLUDED_${command//-/_}_ZSH"
+ print -v AZ_GUARD_VALUE -- "${(P)AZ_INCLUDE_GUARD}" #? Comment temprorary to autoformat file
+ #? System Modules
+ if [[ -f "$AZ_DIR/system/modules/az-$command.zsh" && -z "$AZ_GUARD_VALUE" ]]; then
+ azDebug "${AZ_C_CYAN}[azIncludeModule]${AZ_C_RESET} Initialize '${AZ_C_YELLOW}$command${AZ_C_RESET}' module"
+ azSource "system/modules/az-$command.zsh"
+ eval "$AZ_INCLUDE_GUARD=1"
  fi
 }
 function azIncludeModule() {
@@ -69,14 +154,24 @@ function azIncludeModule() {
  #? System Modules
  if [[ -f "$AZ_DIR/system/modules/az-$command.zsh" && -z "$AZ_GUARD_VALUE" ]]; then
  azDebug "${AZ_C_CYAN}[azIncludeModule]${AZ_C_RESET} Initialize '${AZ_C_YELLOW}$command${AZ_C_RESET}' module"
- azInclude "system/modules/az-$command.zsh"
+ azSource "system/modules/az-$command.zsh"
  eval "$AZ_INCLUDE_GUARD=1"
  fi
 }
 function azRunModule() {
  print -v AZ_GUARD_VALUE -- "${(P)AZ_INCLUDE_GUARD}" #? Comment temprorary to autoformat file
  if [ "$AZ_GUARD_VALUE" = "1" ]; then
- azDebug "${AZ_C_CYAN}[azRunModule]${AZ_C_RESET} Run '${AZ_C_YELLOW}$command${AZ_C_RESET}' module"
+ azDebugFunction "azRunModule" "Run '${AZ_C_YELLOW}$command${AZ_C_RESET}' module"
+ az-$command "${@:2}"
+ return 0
+ fi
+ azError "[azRunModule] Runner for module '${AZ_C_YELLOW}$command${AZ_C_RESET}' was not found"
+ return 1
+}
+function azRunModule() {
+ print -v AZ_GUARD_VALUE -- "${(P)AZ_INCLUDE_GUARD}" #? Comment temprorary to autoformat file
+ if [ "$AZ_GUARD_VALUE" = "1" ]; then
+ azDebugFunction "azRunModule" "Run '${AZ_C_YELLOW}$command${AZ_C_RESET}' module"
  az-$command "${@:2}"
  return 0
  fi
@@ -110,7 +205,7 @@ function azRunFile() {
  return 1
 }
 function azFindCommand() {
- azDebug "${AZ_C_CYAN}[azFindCommand]${AZ_C_RESET} ${AZ_C_YELLOW}$@${AZ_C_RESET}"
+ azDebugFunction "azFindCommand" "${AZ_C_YELLOW}$@${AZ_C_RESET}"
  local command="$1"
  if [[ -f "$AZ_DIR/system/modules/az-$command.zsh" ]]; then
  azIncludeModule "$command" "${@:2}"
@@ -120,12 +215,12 @@ function azFindCommand() {
  #? System Scripts
  if [[ -f "$AZ_DIR/system/scripts/$command" ]]; then
  azDebug "Include script $command"
- azInclude "system/scripts/$command"
+ azSource "system/scripts/$command"
  return 0
  fi
  if [[ -f "$AZ_DIR/system/scripts/$command.zsh" ]]; then
  azDebug "Include script $command.zsh"
- azInclude "system/scripts/$command.zsh"
+ azSource "system/scripts/$command.zsh"
  return 0
  fi
  #? Path files

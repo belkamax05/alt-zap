@@ -1,10 +1,27 @@
-function azInclude() {
-    local includeFile="$AZ_DIR/$1"
-    if [ -f "$includeFile" ]; then
-        source "$includeFile"
-    else
-        azError "Error: include file not found: $includeFile"
-    fi
+function azSource() {
+    local file="$AZ_DIR/$1"
+    azTraceSource "${AZ_C_CYAN}[azSource]${AZ_C_RESET} Sourcing $file"
+    source "$file"
+}
+function azSourceSystem() {
+    local file="$AZ_DIR/system/$1"
+    azTraceSource "${AZ_C_CYAN}[azSourceSystem]${AZ_C_RESET} Sourcing $file"
+    source "$file"
+}
+function azSourceSystemLab() {
+    local file="$AZ_DIR/system/lab/$1"
+    azTraceSource "${AZ_C_CYAN}[azSourceSystemLab]${AZ_C_RESET} Sourcing $file"
+    source "$file"
+}
+function azSourceSystemModule() {
+    local file="$AZ_DIR/system/modules/$1"
+    azTraceSource "${AZ_C_CYAN}[azSourceSystemModule]${AZ_C_RESET} Sourcing $file"
+    source "$file"
+}
+function azSourceSystemPlugin() {
+    local file="$AZ_PLUGIN_DIR/$1"
+    azTraceSource "${AZ_C_CYAN}[azSourceSystemPlugin]${AZ_C_RESET} Sourcing $file"
+    source "$file"
 }
 
 function azIncludeModule() {
@@ -14,7 +31,7 @@ function azIncludeModule() {
     #? System Modules
     if [[ -f "$AZ_DIR/system/modules/az-$command.zsh" && -z "$AZ_GUARD_VALUE" ]]; then
         azDebug "${AZ_C_CYAN}[azIncludeModule]${AZ_C_RESET} Initialize '${AZ_C_YELLOW}$command${AZ_C_RESET}' module"
-        azInclude "system/modules/az-$command.zsh"
+        azSource "system/modules/az-$command.zsh"
         eval "$AZ_INCLUDE_GUARD=1"
     fi
 }

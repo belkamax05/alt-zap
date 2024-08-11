@@ -12,3 +12,18 @@ function azNoDebug() {
     fi
 }
 alias azIsNotDebug='azNoDebug'
+
+function azDebugSource() {
+    azDebug "${AZ_C_CYAN}[Source]${AZ_C_RESET} $@"
+}
+function azDebugFunction() {
+    local name="$1"
+
+    if [ "$name" = "azRunModule" ]; then
+        return 0
+    elif [ "$name" = "azFindCommand" ]; then
+        return 0
+    fi
+
+    azDebug "${AZ_C_CYAN}[$name]${AZ_C_RESET} ${@:2}"
+}

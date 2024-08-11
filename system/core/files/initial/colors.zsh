@@ -1,11 +1,23 @@
-export AZ_C_RESET="\033[0m"
-export AZ_C_BOLD="\033[1m"
 export AZ_C_CYAN="\033[38;5;51m"             #00FFFF
 export AZ_C_DARK_RED="\033[38;5;196m"        #FF3131
 export AZ_C_YELLOW="\033[38;5;226m"          #FFFF00
 export AZ_C_HOTPINK="\033[38;5;199m"         #FF00AF
 export AZ_C_GREEN="\033[38;5;46m"            #00FF00
 export AZ_C_MAGENTA="\033[38;2;201;101;201m" #C965C9
+export AZ_C_WHITE="\033[38;5;231m"           #FFFFFF
+export AZ_C_DARK_BLUE="\033[38;5;21m"        #0000FF
+export AZ_C_DARK_GREEN="\033[38;5;22m"       #00FF00
+export AZ_C_DARK_YELLOW="\033[38;5;58m"      #FFFF00
+export AZ_C_DARK_CYAN="\033[38;5;37m"        #00FFFF
+export AZ_C_DARK_MAGENTA="\033[38;5;90m"     #FF00FF
+export AZ_C_DARK_WHITE="\033[38;5;255m"      #FFFFFF
+export AZ_C_DARK_GRAY="\033[38;5;240m"       #808080
+export AZ_C_DARK_ORANGE="\033[38;5;208m"     #FFA500
+export AZ_C_DARK_PINK="\033[38;5;198m"       #FF69B4
+export AZ_C_DARK_PURPLE="\033[38;5;57m"      #800080
+export AZ_C_DARK_TURQUOISE="\033[38;5;44m"   #40E0D0
 
+export AZ_C_RESET="\033[0m"
+export AZ_C_BOLD="\033[1m"
 export AZ_C_ERROR="$AZ_C_DARK_RED"
 export AZ_C_DEBUG="$AZ_C_MAGENTA"
