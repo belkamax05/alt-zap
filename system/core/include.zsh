@@ -1,13 +1,10 @@
-function azCoreInclude() {
-    source "$AZ_DIR/system/core/files/initial/paths.zsh"
-
-    if [ -f "$AZ_CORE_COMPILED_PATH" ]; then
-        source "$AZ_CORE_COMPILED_PATH"
-    else
-        source "$AZ_DIR/system/core/compile.zsh"
-        if [ ! -f "$AZ_CORE_COMPILED_PATH" ]; then
-            echo "Error: Core compiled file not found: $AZ_CORE_COMPILED_PATH" # TODO azError
-        fi
-    fi
+function azTrace() {
+    # echo "--- [az.TRACE] --- $@"
 }
-azCoreInclude
+function azCoreSource() {
+    local file="$AZ_DIR/system/core/$1"
+    azTrace "Sourcing $file"
+    source "$file"
+}
+azCoreSource "files/initial/paths.zsh"
+azCoreSource "run-with-build.zsh"

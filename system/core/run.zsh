@@ -1,0 +1,1 @@
+source "$AZ_CORE_COMPILED_PATH"

@@ -1,4 +1,4 @@
-function azCoreCompile() {
+(
     local coreFile="$AZ_CORE_COMPILED_PATH"
     local minify=1 # 0 - no minify, 1 - minify
     rm -f "$coreFile"
@@ -54,7 +54,4 @@ function azCoreCompile() {
         cp "$AZ_CORE_COMPILED_MIN_PATH" "$coreFile"
         rm -f "$AZ_CORE_COMPILED_MIN_PATH"
     fi
-
-    source "$AZ_DIR/system/core/include.zsh"
-}
-azCoreCompile
+)
