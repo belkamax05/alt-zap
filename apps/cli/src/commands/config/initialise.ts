@@ -1,4 +1,5 @@
 import { log } from '@clack/prompts';
+import colors from 'colors';
 import fs from 'fs';
 import Command from '../../types/app/Command';
 
@@ -8,7 +9,6 @@ import Command from '../../types/app/Command';
 // };
 
 const initialise: Command = async ({ command }) => {
-  const chalk = require('chalk');
   log.step(`Initialising configuration`);
   const { force: _force, f: _f } = command.args;
   const force = _force || _f;
@@ -19,7 +19,7 @@ const initialise: Command = async ({ command }) => {
     fs.mkdirSync(configDir, { recursive: true });
   }
   if (force || !fs.existsSync(configFilePath)) {
-    log.info(`Creating configuration file '${chalk.cyan(configFilePath)}'`);
+    log.info(`Creating configuration file '${colors.cyan(configFilePath)}'`);
     fs.writeFileSync(configFilePath, JSON.stringify({ temp: true }, null, 2));
   }
 };

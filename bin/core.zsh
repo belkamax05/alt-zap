@@ -1,10 +1,9 @@
 export AZ_CONFIG_DIR="${AZ_CONFIG_DIR:-$HOME/.az}"
+export AZ_CONFIG_FILE="$AZ_CONFIG_DIR/user-config.json"
 export NVM_DIR=${NVM_DIR:-"$AZ_CONFIG_DIR/bin/.nvm"}
 export AZ_PLUGIN_DIR="$AZ_DIR/system/plugins"
 export AZ_CORE_COMPILED_PATH="$AZ_DIR/bin/core.zsh"
 export AZ_CORE_COMPILED_MIN_PATH="$AZ_DIR/bin/core.min.zsh"
-export PATH="$AZ_CONFIG_DIR/bin:$PATH"
-export PATH="$HOME/.cargo/bin:$PATH"
 export AZ_C_RESET="\033[0m"
 export AZ_C_BOLD="\033[1m"
 export AZ_C_CYAN="\033[38;5;51m" #00FFFF
@@ -21,18 +20,8 @@ export AZ_PREFFIX_ERROR="${AZ_C_ERROR}$AZ_PREFFIX${AZ_C_RESET} ❌"
 export AZ_PREFFIX_SUCCESS="${AZ_C_CYAN}$AZ_PREFFIX${AZ_C_RESET} ✅"
 export AZ_PREFFIX_INFO="${AZ_C_CYAN}$AZ_PREFFIX${AZ_C_RESET} ℹ️"
 export AZ_PREFFIX_DEBUG="${AZ_C_DEBUG}$AZ_PREFFIX${AZ_C_RESET} 🚧"
-echo "!!! check-user-config"
-export AZ_DEBUG=$(jq -r .debug ~/.az/user-config.json) # "true" or "false"
+export AZ_DEBUG=${AZ_DEBUG:-"false"}
 typeset -gA nav_list
-alias rs="az restart"
-alias l="az load"
-alias rl="az reload"
-alias rr="az restart"
-alias up="az up"
-alias clr="clear"
-alias c="clear"
-alias dir='ls'
-alias he="az hard-exit"
 function azIsDebug() {
  if [ "$AZ_DEBUG" = "true" ]; then
  return 0
@@ -168,6 +157,9 @@ function azLoadUser() {
  azError "User include file not found: $AZ_CONFIG_DIR/include.zsh"
  fi
 }
+export PATH="$AZ_CONFIG_DIR/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
+[ -f "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh" ] && source "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh"
 function az() {
  if [ -z "$1" ]; then
  echo "!az! Default view TODO replace"
@@ -196,7 +188,6 @@ function command_not_found_handler {
  azError "[command_not_found_handler.zsh] Command '${AZ_C_YELLOW}$1${AZ_C_RESET}'${2:+ (arguments ${AZ_C_YELLOW}${@:2}${AZ_C_RESET})} not found. Did you mean to run a different command?"
  return 127
 }
-[ -f "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh" ] && source "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh"
 autoload -Uz compinit
 compinit
 compdef _az az
@@ -387,8 +378,16 @@ function _nav {
  compadd -- ${nav_suggestions}
 }
 compdef _nav az nav
-function finaliseExec() {
- local xxValue=$(jq -r .xx ~/.az/user-config.json)
- azInfo "${AZ_C_CYAN}[finalize-lab]${AZ_C_RESET} !!!! Finalise exec $xxValue"
-}
-finaliseExec
+if [ ! -f "$AZ_CONFIG_FILE" ]; then
+ az cli config/initialise
+fi
+export AZ_DEBUG=$(jq -r .debug "$AZ_CONFIG_FILE")
+alias rs="az restart"
+alias l="az load"
+alias rl="az reload"
+alias rr="az restart"
+alias up="az up"
+alias clr="clear"
+alias c="clear"
+alias dir='ls'
+alias he="az hard-exit"

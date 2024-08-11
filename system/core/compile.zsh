@@ -5,27 +5,37 @@ function azCoreCompile() {
     touch "$coreFile"
 
     local srcDir="$AZ_DIR/system/core/files"
+
     local files=(
-        "$srcDir/define-paths.zsh"
-        "$srcDir/define-colors.zsh"
-        "$srcDir/define-preffix.zsh"
-        "$srcDir/check-user-config.zsh"
-        "$srcDir/define-runtime.zsh"
-        "$srcDir/define-alias.zsh"
-        "$srcDir/functions-debug.zsh"
-        "$srcDir/functions-echo.zsh"
-        "$srcDir/functions-source.zsh"
-        "$srcDir/functions-run.zsh"
-        "$srcDir/functions-user.zsh"
-        "$srcDir/module-az.zsh"
-        "$srcDir/handler-load-user.zsh"
-        "$srcDir/handler-bindings.zsh"
-        "$srcDir/handler-not-found.zsh"
-        "$srcDir/plugin-zap.zsh"
-        "$srcDir/autocomplete-init.zsh"
-        "$srcDir/autocomplete-az.zsh"
-        "$srcDir/autocomplete-nav.zsh"
-        "$srcDir/finalise-lab.zsh"
+        "$srcDir/initial/paths.zsh"
+        "$srcDir/initial/colors.zsh"
+        "$srcDir/initial/preffix.zsh"
+        "$srcDir/initial/variables.zsh"
+
+        "$srcDir/functions/debug.zsh"
+        "$srcDir/functions/echo.zsh"
+        "$srcDir/functions/source.zsh"
+        "$srcDir/functions/run.zsh"
+        "$srcDir/functions/user.zsh"
+
+        "$srcDir/env/paths.zsh"
+
+        "$srcDir/plugin/zap.zsh"
+
+        "$srcDir/az/az.zsh"
+
+        "$srcDir/handler/load-user.zsh"
+        "$srcDir/handler/bindings.zsh"
+        "$srcDir/handler/not-found.zsh"
+
+        "$srcDir/autocomplete/init.zsh"
+        "$srcDir/autocomplete/az.zsh"
+        "$srcDir/autocomplete/nav.zsh"
+
+        "$srcDir/runtime/config-init.zsh"
+        "$srcDir/runtime/variables.zsh"
+        "$srcDir/runtime/alias.zsh"
+
     )
 
     for file in "${files[@]}"; do
