@@ -9,7 +9,7 @@ function az-cli() {
 
     # Prevents command execution (> "command").
     if [ "$1" = "-n" ] || [ "$1" = "--no-run" ]; then
-        az cli "${@:2}" >/dev/null
+        az-cli "${@:2}" >/dev/null
         return 0
     fi
 
@@ -30,18 +30,4 @@ function az-cli() {
     # Return the captured exit code
     return ${scriptCode}
 }
-
-# function az-cli-proxy() {
-#     local scriptResult=$(FORCE_COLOR=1 az cli "$@" | tee /dev/tty)
-#     local lastOutputLine=$(echo "${scriptResult}" | tail -n 1)
-#     azDebug "lastOutputLine: ${lastOutputLine}"
-#     if [[ "${lastOutputLine}" == "> "* ]]; then
-#         eval "${lastOutputLine:2}"
-#     fi
-# }
-# function az-cli-proxy-silent() {
-#     local scriptResult=$(az cli "$@")
-#     local lastOutputLine=$(echo "${scriptResult}" | tail -n 1)
-#     azDebug "lastOutputLine: ${lastOutputLine}"
-#     eval "${lastOutputLine}"
-# }
+azGuardSetCommand "cli"

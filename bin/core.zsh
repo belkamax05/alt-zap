@@ -203,35 +203,6 @@ function azRunFile() {
  azError "[azRunFile] Runner for file $filePath was not found"
  return 1
 }
-function azFindCommand() {
- azDebugFunction "azFindCommand" "${AZ_C_YELLOW}$@${AZ_C_RESET}"
- local command="$1"
- if [[ -f "$AZ_SYSTEM_COMMANDS_DIR/az-$command.zsh" ]]; then
- azRunCommand "$command" "${@:2}"
- return 0
- fi
- #? Path files
- local filePath="$PWD/$command"
- if [ -f "$filePath" ]; then
- azDebug "Include file $filePath"
- azRunFile "$filePath" "${@:2}"
- return 0
- fi
- #? Script in js
- # if [[ -f "$AZ_DIR/apps/cli/src/commands/$command.ts" ]]; then
- # azDebug "Include script $command.ts"
- # az cli "$@"
- # return 0
- # fi
- # az clix "$@"
- # if [ $? -eq 0 ]; then
- # echo "Command found A: $command"
- # return 0
- # fi
- # echo "Command not found B: $command"
- az cli "$@"
- return 0
-}
 function azLoadUser() {
  if [ -f "$AZ_CONFIG_DIR/include.zsh" ]; then
  source "$AZ_CONFIG_DIR/include.zsh"
@@ -251,18 +222,87 @@ function az() {
  azRunCommand "$@"
  return 0
  fi
- azFindCommand "$@"
+ az-not-found "$@"
  if [ $? -eq 0 ]; then
  return 0
  fi
- azError "[az.zsh] Module '${AZ_C_YELLOW}$1${AZ_C_RESET}'${2:+ (arguments ${AZ_C_YELLOW}${@:2}${AZ_C_RESET})} could not be loaded. Does not exist or error prevents loading."
+ # azFindCommand "$@"
+ # if [ $? -eq 0 ]; then
+ # return 0
+ # fi
+ # azError "[az.zsh] Module '${AZ_C_YELLOW}$1${AZ_C_RESET}'${2:+ (arguments ${AZ_C_YELLOW}${@:2}${AZ_C_RESET})} could not be loaded. Does not exist or error prevents loading."
  return 1
 }
+function az-not-found() {
+ # azDebugFunction "az-not-found" "Execute ${AZ_C_YELLOW}$@${AZ_C_RESET}"
+ # echo "This is default command not found with params $@"
+ local command="$1"
+ if [ -f "$AZ_SYSTEM_COMMANDS_DIR/az-$command.zsh" ]; then
+ azRunCommand "$command" "${@:2}"
+ return 0
+ fi
+ local filePath="$PWD/$command"
+ if [ -f "$filePath" ]; then
+ azDebugFunction "az-not-found" "Include run file $filePath"
+ azRunFile "$filePath" "${@:2}"
+ return 0
+ fi
+ azDebugFunction "az-not-found" "Cli ${AZ_C_YELLOW}$@${AZ_C_RESET}"
+ az-cli "$@"
+ return 0
+}
+azGuardSetCommand "not-found"
 function az-here() {
  # echo "This is here2 with params $@"
  cd "$AZ_DIR"
 }
 azGuardSetCommand "here"
+function az-extend-nav() {
+ # echo "azExtendNav params: $0, $1, $2, $3"
+ local cmd="$1"
+ local dir="$2"
+ # echo "azExtendNav params: cmd=$cmd, dir=$dir"
+ nav_list[$cmd]="$dir"
+}
+azGuardSetCommand "extend-nav"
+function az-extend {
+ if [ "$1" = "nav" ]; then
+ shift
+ az extend-nav "$@"
+ else
+ echo "Unknown extend command $1"
+ fi
+}
+azGuardSetCommand "extend"
+function az-cli() {
+ if [ "$1" = "-b" ] || [ "$1" = "--build" ] || [ "$1" = "build" ]; then
+ az build
+ if [ -n "$2" ]; then
+ az cli "${@:2}"
+ fi
+ return 0
+ fi
+ # Prevents command execution (> "command").
+ if [ "$1" = "-n" ] || [ "$1" = "--no-run" ]; then
+ az-cli "${@:2}" >/dev/null
+ return 0
+ fi
+ # Run the node script and capture its output and exit code
+ # local scriptResult=$(FORCE_COLOR=1 node "$AZ_DIR/dist/apps/cli/index.cjs" "$@" | tee /dev/tty)
+ local scriptResult=$(FORCE_COLOR=1 "$AZ_DIR/bin/run" "$@" | tee /dev/tty)
+ local scriptCode=$?
+ while IFS= read -r line; do
+ if [[ "${line}" == "> "* ]]; then
+ echo "Executing: ${line:2}. TODO (not to use this feature)"
+ # eval "${line:2}"
+ fi
+ done <<<"${scriptResult}"
+ # Print the captured exit code
+ # echo "Process exit code: ${scriptCode}"
+ # Return the captured exit code
+ return ${scriptCode}
+}
+azGuardSetCommand "cli"
 azLoadUser
 function listen_hotkey() {
  echo "Press a hotkey sequence (e.g., '^y^b'): "

@@ -5,3 +5,4 @@ function az-extend-nav() {
     # echo "azExtendNav params: cmd=$cmd, dir=$dir"
     nav_list[$cmd]="$dir"
 }
+azGuardSetCommand "extend-nav"

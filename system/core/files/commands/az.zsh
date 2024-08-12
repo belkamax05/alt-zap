@@ -12,10 +12,15 @@ function az() {
         return 0
     fi
 
-    azFindCommand "$@"
+    az-not-found "$@"
     if [ $? -eq 0 ]; then
         return 0
     fi
-    azError "[az.zsh] Module '${AZ_C_YELLOW}$1${AZ_C_RESET}'${2:+ (arguments ${AZ_C_YELLOW}${@:2}${AZ_C_RESET})} could not be loaded. Does not exist or error prevents loading."
+
+    # azFindCommand "$@"
+    # if [ $? -eq 0 ]; then
+    #     return 0
+    # fi
+    # azError "[az.zsh] Module '${AZ_C_YELLOW}$1${AZ_C_RESET}'${2:+ (arguments ${AZ_C_YELLOW}${@:2}${AZ_C_RESET})} could not be loaded. Does not exist or error prevents loading."
     return 1
 }

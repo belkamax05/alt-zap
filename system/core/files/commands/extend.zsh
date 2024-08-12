@@ -6,3 +6,4 @@ function az-extend {
         echo "Unknown extend command $1"
     fi
 }
+azGuardSetCommand "extend"

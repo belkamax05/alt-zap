@@ -3,7 +3,7 @@ local AZ_START_TIME=$(date +%s)
 
 source "$AZ_DIR/system/core/include.zsh"
 
-# for command in nav cli here; do
+# for command in nav cli; do
 #     az load-module "$command"
 #     az alias-module "$command"
 # done

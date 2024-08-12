@@ -26,7 +26,11 @@
         "$srcDir/plugin/zap.zsh"
 
         "$srcDir/commands/az.zsh"
+        "$srcDir/commands/not-found.zsh"
         "$srcDir/commands/here.zsh"
+        "$srcDir/commands/extend-nav.zsh"
+        "$srcDir/commands/extend.zsh"
+        "$srcDir/commands/cli.zsh"
 
         "$srcDir/handler/load-user.zsh"
         "$srcDir/handler/bindings.zsh"
