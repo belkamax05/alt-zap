@@ -1,6 +1,6 @@
 function az-include-plugin() {
     local pluginName=$1
-    local pluginPath=$AZ_PLUGIN_DIR/$pluginName/include.zsh
+    local pluginPath=$AZ_SYSTEM_PLUGIN_DIR/$pluginName/include.zsh
     if [ -f $pluginPath ]; then
         source $pluginPath
         return 0

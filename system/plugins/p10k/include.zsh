@@ -1,2 +1,2 @@
 plug "romkatv/powerlevel10k"
-source "$AZ_PLUGIN_DIR/p10k/include-config.zsh"
+source "$AZ_SYSTEM_PLUGIN_DIR/p10k/include-config.zsh"

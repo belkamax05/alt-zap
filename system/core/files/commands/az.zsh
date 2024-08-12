@@ -6,6 +6,11 @@ function az() {
         return
     fi
     local command="$1"
+    azGuardCheckCommand "$command"
+    if [ $? -eq 1 ]; then
+        azRunCommand "$@"
+        return 0
+    fi
 
     azFindCommand "$@"
     if [ $? -eq 0 ]; then

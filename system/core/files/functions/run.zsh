@@ -31,21 +31,8 @@ function azRunFile() {
 function azFindCommand() {
     azDebugFunction "azFindCommand" "${AZ_C_YELLOW}$@${AZ_C_RESET}"
     local command="$1"
-    if [[ -f "$AZ_DIR/system/modules/az-$command.zsh" ]]; then
-        azIncludeModule "$command" "${@:2}"
-        azRunModule "$command" "${@:2}"
-        return 0
-    fi
-
-    #? System Scripts
-    if [[ -f "$AZ_DIR/system/scripts/$command" ]]; then
-        azDebug "Include script $command"
-        azSource "system/scripts/$command"
-        return 0
-    fi
-    if [[ -f "$AZ_DIR/system/scripts/$command.zsh" ]]; then
-        azDebug "Include script $command.zsh"
-        azSource "system/scripts/$command.zsh"
+    if [[ -f "$AZ_SYSTEM_COMMANDS_DIR/az-$command.zsh" ]]; then
+        azRunCommand "$command" "${@:2}"
         return 0
     fi
 

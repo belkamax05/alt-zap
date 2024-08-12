@@ -10,7 +10,6 @@ function azGuardUnset() {
     AZ_GUARD="AZ_GUARD_${name//-/_}_ZSH"
     eval "$AZ_GUARD=0"
 }
-
 function azGuardCheck() {
     local name="$1"
     AZ_GUARD="AZ_GUARD_${name//-/_}_ZSH"

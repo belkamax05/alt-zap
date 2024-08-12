@@ -1,7 +1,9 @@
 export AZ_CONFIG_DIR="${AZ_CONFIG_DIR:-$HOME/.az}"
 export AZ_CONFIG_FILE="$AZ_CONFIG_DIR/user-config.json"
+export AZ_SYSTEM_DIR="$AZ_DIR/system"
+export AZ_SYSTEM_COMMANDS_DIR="$AZ_SYSTEM_DIR/commands"
 export NVM_DIR=${NVM_DIR:-"$AZ_CONFIG_DIR/bin/.nvm"}
-export AZ_PLUGIN_DIR="$AZ_DIR/system/plugins"
+export AZ_SYSTEM_PLUGIN_DIR="$AZ_DIR/system/plugins"
 export AZ_CORE_COMPILED_PATH="$AZ_DIR/bin/core.zsh"
 export AZ_CORE_COMPILED_MIN_PATH="$AZ_DIR/bin/core.min.zsh"
 export AZ_C_CYAN="\033[38;5;51m" #00FFFF
@@ -63,11 +65,11 @@ function azDebugSource() {
 }
 function azDebugFunction() {
  local name="$1"
- if [ "$name" = "azRunModule" ]; then
- return 0
- elif [ "$name" = "azFindCommand" ]; then
- return 0
- fi
+ # if [ "$name" = "azRunCommand" ]; then
+ # return 0
+ # elif [ "$name" = "azFindCommand" ]; then
+ # return 0
+ # fi
  azDebug "${AZ_C_CYAN}[$name]${AZ_C_RESET} ${@:2}"
 }
 function azDebug() {
@@ -114,53 +116,66 @@ function azGuardCheck() {
  return 0
 }
 function azSource() {
- local file="$AZ_DIR/$1"
- azTraceSource "${AZ_C_CYAN}[azSource]${AZ_C_RESET} Sourcing $file"
+ local file="$1"
+ azTraceSource "$file"
  source "$file"
+}
+function azSourceOnce() {
+ local file="$1"
+ local hash=$(echo -n "$file" | shasum -a 256 | awk '{print $1}')
+ local guardName="source_once_${hash}"
+ azGuardCheck "$guardName"
+ if [ $? -eq 1 ]; then
+ return 0
+ fi
+ azSource "$1"
+ azGuardSet "$guardName"
 }
 function azSourceSystem() {
- local file="$AZ_DIR/system/$1"
- azTraceSource "${AZ_C_CYAN}[azSourceSystem]${AZ_C_RESET} Sourcing $file"
- source "$file"
+ local file="$AZ_SYSTEM_DIR/$1"
+ azSource "$file"
 }
 function azSourceSystemLab() {
- local file="$AZ_DIR/system/lab/$1"
- azTraceSource "${AZ_C_CYAN}[azSourceSystemLab]${AZ_C_RESET} Sourcing $file"
- source "$file"
+ local file="$AZ_SYSTEM_DIR/lab/$1"
+ azSource "$file"
 }
 function azSourceSystemModule() {
- local file="$AZ_DIR/system/modules/$1"
- azTraceSource "${AZ_C_CYAN}[azSourceSystemModule]${AZ_C_RESET} Sourcing $file"
- source "$file"
+ local file="$AZ_SYSTEM_COMMANDS_DIR/$1"
+ azSource "$file"
 }
 function azSourceSystemPlugin() {
- local file="$AZ_PLUGIN_DIR/$1"
- azTraceSource "${AZ_C_CYAN}[azSourceSystemPlugin]${AZ_C_RESET} Sourcing $file"
- source "$file"
+ local file="$AZ_SYSTEM_PLUGIN_DIR/$1"
+ azSource "$file"
 }
-function azIncludeModule() {
+function azGuardSetCommand() {
+ azGuardSet "command_$1"
+}
+function azGuardCheckCommand() {
+ azGuardCheck "command_$1"
+}
+function azLoadCommand() {
  local command="$1"
- local guardName="module_${command//-/_}"
- azGuardCheck "$guardName"
- if [ "$?" -eq 1 ]; then
- # azDebugFunction "azIncludeModule" "Module '${AZ_C_YELLOW}$command${AZ_C_RESET}' is already included"
+ azGuardCheckCommand "$command"
+ if [ $? -eq 1 ]; then
  return 0
  fi
- if [[ -f "$AZ_DIR/system/modules/az-$command.zsh" ]]; then
- azSourceSystemModule "az-$command.zsh"
- azGuardSet "$guardName"
+ if [ -f "$AZ_SYSTEM_COMMANDS_DIR/az-$command.zsh" ]; then
+ azDebugFunction "azLoadCommand" "Initialising '${AZ_C_YELLOW}$command${AZ_C_RESET}' comand"
+ azSource "$AZ_SYSTEM_COMMANDS_DIR/az-$command.zsh"
+ azGuardSetCommand "$command"
+ return 0
  fi
+ azDebugFunction "azLoadCommand" "Command '${AZ_C_YELLOW}$command${AZ_C_RESET}' not found"
+ return 1
 }
-function azRunModule() {
+function azRunCommand() {
  local command="$1"
- local guardName="module_${command//-/_}"
- azGuardCheck "$guardName"
- if [ "$?" -eq 1 ]; then
+ azGuardCheckCommand "$command"
+ if [ $? -eq 0 ]; then
+ azLoadCommand "$command"
+ fi
  az-$command "${@:2}"
  return 0
- fi
- azErrorFunction "azRunModule" "Runner for module '${AZ_C_YELLOW}$command${AZ_C_RESET}' was not found"
- return 1
 }
 function azRunFile() {
  azDebug "[azRunFile] ${AZ_C_YELLOW}$@${AZ_C_RESET}"
@@ -191,20 +206,8 @@ function azRunFile() {
 function azFindCommand() {
  azDebugFunction "azFindCommand" "${AZ_C_YELLOW}$@${AZ_C_RESET}"
  local command="$1"
- if [[ -f "$AZ_DIR/system/modules/az-$command.zsh" ]]; then
- azIncludeModule "$command" "${@:2}"
- azRunModule "$command" "${@:2}"
- return 0
- fi
- #? System Scripts
- if [[ -f "$AZ_DIR/system/scripts/$command" ]]; then
- azDebug "Include script $command"
- azSource "system/scripts/$command"
- return 0
- fi
- if [[ -f "$AZ_DIR/system/scripts/$command.zsh" ]]; then
- azDebug "Include script $command.zsh"
- azSource "system/scripts/$command.zsh"
+ if [[ -f "$AZ_SYSTEM_COMMANDS_DIR/az-$command.zsh" ]]; then
+ azRunCommand "$command" "${@:2}"
  return 0
  fi
  #? Path files
@@ -243,6 +246,11 @@ function az() {
  return
  fi
  local command="$1"
+ azGuardCheckCommand "$command"
+ if [ $? -eq 1 ]; then
+ azRunCommand "$@"
+ return 0
+ fi
  azFindCommand "$@"
  if [ $? -eq 0 ]; then
  return 0
@@ -250,6 +258,11 @@ function az() {
  azError "[az.zsh] Module '${AZ_C_YELLOW}$1${AZ_C_RESET}'${2:+ (arguments ${AZ_C_YELLOW}${@:2}${AZ_C_RESET})} could not be loaded. Does not exist or error prevents loading."
  return 1
 }
+function az-here() {
+ # echo "This is here2 with params $@"
+ cd "$AZ_DIR"
+}
+azGuardSetCommand "here"
 azLoadUser
 function listen_hotkey() {
  echo "Press a hotkey sequence (e.g., '^y^b'): "
@@ -258,12 +271,14 @@ function listen_hotkey() {
 bindkey -s '^h^k' 'listen_hotkey^M'
 bindkey -s '^N' 'echo Hello^M'
 function command_not_found_handler {
- azFindCommand "$@"
- if [ $? -eq 0 ]; then
+ # azFindCommand "$@"
+ # if [ $? -eq 0 ]; then
+ # return 0
+ # fi
+ # azError "[command_not_found_handler.zsh] Command '${AZ_C_YELLOW}$1${AZ_C_RESET}'${2:+ (arguments ${AZ_C_YELLOW}${@:2}${AZ_C_RESET})} not found. Did you mean to run a different command?"
+ # return 127
+ az "$@"
  return 0
- fi
- azError "[command_not_found_handler.zsh] Command '${AZ_C_YELLOW}$1${AZ_C_RESET}'${2:+ (arguments ${AZ_C_YELLOW}${@:2}${AZ_C_RESET})} not found. Did you mean to run a different command?"
- return 127
 }
 autoload -Uz compinit
 compinit

@@ -17,7 +17,7 @@
         "$srcDir/functions/echo.zsh"
         "$srcDir/functions/guard.zsh"
         "$srcDir/functions/source.zsh"
-        "$srcDir/functions/module.zsh"
+        "$srcDir/functions/command.zsh"
         "$srcDir/functions/run.zsh"
         "$srcDir/functions/user.zsh"
 
@@ -25,7 +25,8 @@
 
         "$srcDir/plugin/zap.zsh"
 
-        "$srcDir/az/az.zsh"
+        "$srcDir/commands/az.zsh"
+        "$srcDir/commands/here.zsh"
 
         "$srcDir/handler/load-user.zsh"
         "$srcDir/handler/bindings.zsh"
@@ -47,6 +48,8 @@
                 echo "# File: ${file#$srcDir}" >>"$coreFile"
             fi
             cat "$file" >>"$coreFile"
+            # echo "" >>"$coreFile"
+            # echo "echo \"File is $file\"" >>"$coreFile"
             echo "" >>"$coreFile"
         else
             echo "Error: Core file not found: $file" # TODO azError
