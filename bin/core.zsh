@@ -47,6 +47,7 @@ alias clr="clear"
 alias c="clear"
 alias dir='ls'
 alias he="az hard-exit"
+alias nav="az nav"
 function azTraceGuard() {
  azTrace "${AZ_C_CYAN}[Guard]${AZ_C_RESET} $@"
 }
@@ -185,6 +186,7 @@ function azRunCommand() {
  if [ $? -eq 0 ]; then
  azLoadCommand "$command"
  fi
+ azDebugFunction "azRunCommand" "Run command '${AZ_C_YELLOW}$command${AZ_C_RESET}' with args ${@:2}"
  az-$command "${@:2}"
  return 0
 }
@@ -236,6 +238,7 @@ function az() {
  local command="$1"
  azGuardCheckCommand "$command"
  if [ $? -eq 1 ]; then
+ azDebugFunction "az" "Runs '${AZ_C_YELLOW}$command${AZ_C_RESET}' from cache"
  azRunCommand "$@"
  return 0
  fi
@@ -251,10 +254,12 @@ function az() {
  return 1
 }
 function az-not-found() {
+ local command="$1"
+ azDebugFunction "az-not-found" "Not found '${AZ_C_YELLOW}$command${AZ_C_RESET}'"
  # azDebugFunction "az-not-found" "Execute ${AZ_C_YELLOW}$@${AZ_C_RESET}"
  # echo "This is default command not found with params $@"
- local command="$1"
  if [ -f "$AZ_SYSTEM_COMMANDS_DIR/az-$command.zsh" ]; then
+ azDebugFunction "az-not-found" "Run command '${AZ_C_YELLOW}$command${AZ_C_RESET}'"
  azRunCommand "$command" "${@:2}"
  return 0
  fi
@@ -264,7 +269,7 @@ function az-not-found() {
  azRunFile "$filePath" "${@:2}"
  return 0
  fi
- azDebugFunction "az-not-found" "Cli ${AZ_C_YELLOW}$@${AZ_C_RESET}"
+ azDebugFunction "az-not-found" "Redirect '${AZ_C_YELLOW}not-found${AZ_C_RESET}' into az-cli ${AZ_C_YELLOW}$@${AZ_C_RESET}"
  az-cli "$@"
  return 0
 }
@@ -274,6 +279,54 @@ function az-here() {
  cd "$AZ_DIR"
 }
 azGuardSetCommand "here"
+function az-nav() {
+ local cmd=""
+ local code_flag=0
+ for arg in "$@"; do
+ if [ "$arg" = "-c" ]; then
+ code_flag=1
+ elif [ -z "$cmd" ]; then
+ cmd="$arg"
+ fi
+ done
+ # echo "Nav s1 cmd=$cmd, code_flag=$code_flag"
+ if [ -z "$cmd" ]; then
+ azDebug "l14: No command provided"
+ if ((code_flag)); then
+ code -r .
+ fi
+ return
+ fi
+ #? Filtering system commands
+ # echo "Nav s2 cmd=$cmd, code_flag=$code_flag"
+ if [ "$cmd" = "list" ]; then
+ echo "List to be runned"
+ sts system/nav/list "$@"
+ return
+ fi
+ #? Processing
+ local dir="${nav_list[$cmd]}"
+ if [ -z "$dir" ]; then
+ #? location in dictionary not found, applying original argument $cmd
+ azDebug "l34: location in dictionary not found, applying original argument $cmd"
+ dir=$cmd
+ fi
+ # echo "Nav s3 cmd=$cmd, dir=$dir"
+ if [ -n "$dir" ]; then
+ # echo "Cding dir... $dir"
+ cd $dir
+ # load
+ local newDir=$(pwd)
+ if ((code_flag)); then
+ code -r .
+ fi
+ if ((code_flag)); then
+ echo "cd $newDir\nclear" >>"$STS_DIR/next_start.sh"
+ restart
+ fi
+ fi
+}
+azGuardSetCommand "nav"
 function az-extend-nav() {
  # echo "azExtendNav params: $0, $1, $2, $3"
  local cmd="$1"
@@ -529,3 +582,4 @@ compdef _nav az nav
 azConfigInit
 azLoadUser
 azLoadUserConfig
+azLoadCommand "nav"

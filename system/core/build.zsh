@@ -33,6 +33,7 @@
         "$srcDir/commands/az.zsh"
         "$srcDir/commands/not-found.zsh"
         "$srcDir/commands/here.zsh"
+        "$srcDir/commands/nav.zsh"
         "$srcDir/commands/extend-nav.zsh"
         "$srcDir/commands/extend.zsh"
         "$srcDir/commands/cli.zsh"

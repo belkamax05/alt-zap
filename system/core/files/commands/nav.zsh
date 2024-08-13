@@ -51,3 +51,4 @@ function az-nav() {
     fi
 
 }
+azGuardSetCommand "nav"

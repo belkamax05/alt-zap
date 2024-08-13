@@ -8,6 +8,7 @@ function az() {
     local command="$1"
     azGuardCheckCommand "$command"
     if [ $? -eq 1 ]; then
+        azDebugFunction "az" "Runs '${AZ_C_YELLOW}$command${AZ_C_RESET}' from cache"
         azRunCommand "$@"
         return 0
     fi
