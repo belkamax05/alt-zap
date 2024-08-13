@@ -1,4 +1,3 @@
 azConfigInit
-azLoadUser
 azLoadUserConfig
-azLoadCommand "nav"
+azLoadUser

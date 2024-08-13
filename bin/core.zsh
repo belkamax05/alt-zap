@@ -36,18 +36,23 @@ export AZ_PREFFIX_ERROR="${AZ_C_ERROR}$AZ_PREFFIX${AZ_C_RESET} ❌"
 export AZ_PREFFIX_SUCCESS="${AZ_C_CYAN}$AZ_PREFFIX${AZ_C_RESET} ✅"
 export AZ_PREFFIX_INFO="${AZ_C_CYAN}$AZ_PREFFIX${AZ_C_RESET} ℹ️"
 export AZ_PREFFIX_DEBUG="${AZ_C_DEBUG}$AZ_PREFFIX${AZ_C_RESET} 🚧"
-export AZ_DEBUG=${AZ_DEBUG:-"false"}
+AZ_DEBUG="false"
 typeset -gA nav_list
-alias rs="az restart"
-alias l="az load"
-alias rl="az reload"
-alias rr="az restart"
-alias up="az up"
+alias he="az hard-exit"
+alias nav="az nav"
+alias here="az here"
+alias cli="az cli"
+alias restart="az restart"
+alias load="az load"
+alias reload="az reload"
+alias up="nav .."
+alias rs="restart"
+alias l="load"
+alias rl="reload"
+alias rr="restart"
 alias clr="clear"
 alias c="clear"
 alias dir='ls'
-alias he="az hard-exit"
-alias nav="az nav"
 function azTraceGuard() {
  azTrace "${AZ_C_CYAN}[Guard]${AZ_C_RESET} $@"
 }
@@ -186,7 +191,7 @@ function azRunCommand() {
  if [ $? -eq 0 ]; then
  azLoadCommand "$command"
  fi
- azDebugFunction "azRunCommand" "Run command '${AZ_C_YELLOW}$command${AZ_C_RESET}' with args ${@:2}"
+ azDebugFunction "azRunCommand" "Run command '${AZ_C_YELLOW}$command${AZ_C_RESET}' with args ${AZ_C_YELLOW}${@:2}${AZ_C_RESET}"
  az-$command "${@:2}"
  return 0
 }
@@ -222,12 +227,13 @@ function azConfigInit() {
  fi
 }
 function azLoadUser() {
- if [ -f "$AZ_CONFIG_DIR/include.zsh" ]; then
- source "$AZ_CONFIG_DIR/include.zsh"
+ if [ ! -f "$AZ_CONFIG_DIR/include.zsh" ]; then
+ touch "$AZ_CONFIG_DIR/include.zsh"
  fi
+ source "$AZ_CONFIG_DIR/include.zsh"
 }
 function azLoadUserConfig() {
- export AZ_DEBUG=$(jq -r .debug "$AZ_CONFIG_FILE")
+ AZ_DEBUG=$(jq -r .debug "$AZ_CONFIG_FILE")
 }
 [ -f "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh" ] && source "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh"
 function az() {
@@ -300,9 +306,8 @@ function az-nav() {
  #? Filtering system commands
  # echo "Nav s2 cmd=$cmd, code_flag=$code_flag"
  if [ "$cmd" = "list" ]; then
- echo "List to be runned"
- sts system/nav/list "$@"
- return
+ az nav-list "$@"
+ return 0
  fi
  #? Processing
  local dir="${nav_list[$cmd]}"
@@ -580,6 +585,5 @@ function _nav {
 }
 compdef _nav az nav
 azConfigInit
-azLoadUser
 azLoadUserConfig
-azLoadCommand "nav"
+azLoadUser

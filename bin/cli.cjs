@@ -1067,73 +1067,6 @@ var init_poweroff = __esm({
   }
 });
 
-// apps/cli/src/commands/terminal/load.ts
-var load_exports = {};
-__export(load_exports, {
-  default: () => load_default
-});
-var load, load_default;
-var init_load = __esm({
-  "apps/cli/src/commands/terminal/load.ts"() {
-    init_logCommand();
-    load = () => {
-      logCommand_default("source ~/.zshrc");
-    };
-    load_default = load;
-  }
-});
-
-// apps/cli/src/commands/terminal/reload.ts
-var reload_exports = {};
-__export(reload_exports, {
-  default: () => reload_default
-});
-var reload, reload_default;
-var init_reload = __esm({
-  "apps/cli/src/commands/terminal/reload.ts"() {
-    init_logCommand();
-    reload = () => {
-      logCommand_default("clear && az load");
-    };
-    reload_default = reload;
-  }
-});
-
-// apps/cli/src/commands/terminal/restart.ts
-var restart_exports = {};
-__export(restart_exports, {
-  default: () => restart_default
-});
-var restart, restart_default;
-var init_restart = __esm({
-  "apps/cli/src/commands/terminal/restart.ts"() {
-    init_logCommand();
-    restart = ({ command: { argv } }) => {
-      const [_, ...childArgs] = argv;
-      console.log("before...", { argv, childArgs });
-      logCommand_default(("clear && zsh " + childArgs.join(" ")).trim());
-      console.log("after...");
-    };
-    restart_default = restart;
-  }
-});
-
-// apps/cli/src/commands/terminal/up.ts
-var up_exports = {};
-__export(up_exports, {
-  default: () => up_default
-});
-var up, up_default;
-var init_up = __esm({
-  "apps/cli/src/commands/terminal/up.ts"() {
-    init_logCommand();
-    up = () => {
-      logCommand_default(`cd ..`);
-    };
-    up_default = up;
-  }
-});
-
 // import("../commands/**/*.ts") in apps/cli/src/utils/importCommand.ts
 var globImport_commands_ts;
 var init_ = __esm({
@@ -1167,11 +1100,7 @@ var init_ = __esm({
       "../commands/sample/nested2.ts": () => Promise.resolve().then(() => (init_nested2(), nested2_exports)),
       "../commands/start.ts": () => Promise.resolve().then(() => (init_start(), start_exports)),
       "../commands/system/envs.ts": () => Promise.resolve().then(() => (init_envs(), envs_exports)),
-      "../commands/system/poweroff.ts": () => Promise.resolve().then(() => (init_poweroff(), poweroff_exports)),
-      "../commands/terminal/load.ts": () => Promise.resolve().then(() => (init_load(), load_exports)),
-      "../commands/terminal/reload.ts": () => Promise.resolve().then(() => (init_reload(), reload_exports)),
-      "../commands/terminal/restart.ts": () => Promise.resolve().then(() => (init_restart(), restart_exports)),
-      "../commands/terminal/up.ts": () => Promise.resolve().then(() => (init_up(), up_exports))
+      "../commands/system/poweroff.ts": () => Promise.resolve().then(() => (init_poweroff(), poweroff_exports))
     });
   }
 });

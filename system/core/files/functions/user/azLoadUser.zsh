@@ -7,7 +7,8 @@
 # }
 
 function azLoadUser() {
-    if [ -f "$AZ_CONFIG_DIR/include.zsh" ]; then
-        source "$AZ_CONFIG_DIR/include.zsh"
+    if [ ! -f "$AZ_CONFIG_DIR/include.zsh" ]; then
+        touch "$AZ_CONFIG_DIR/include.zsh"
     fi
+    source "$AZ_CONFIG_DIR/include.zsh"
 }
