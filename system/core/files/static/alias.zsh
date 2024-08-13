@@ -8,5 +8,3 @@ alias clr="clear"
 alias c="clear"
 alias dir='ls'
 alias he="az hard-exit"
-
-# alias az-git-about="az cli git/about"

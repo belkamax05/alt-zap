@@ -6,6 +6,8 @@ export NVM_DIR=${NVM_DIR:-"$AZ_CONFIG_DIR/bin/.nvm"}
 export AZ_SYSTEM_PLUGIN_DIR="$AZ_DIR/system/plugins"
 export AZ_CORE_COMPILED_PATH="$AZ_DIR/bin/core.zsh"
 export AZ_CORE_COMPILED_MIN_PATH="$AZ_DIR/bin/core.min.zsh"
+export PATH="$AZ_CONFIG_DIR/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
 export AZ_C_CYAN="\033[38;5;51m" #00FFFF
 export AZ_C_DARK_RED="\033[38;5;196m" #FF3131
 export AZ_C_YELLOW="\033[38;5;226m" #FFFF00
@@ -36,6 +38,15 @@ export AZ_PREFFIX_INFO="${AZ_C_CYAN}$AZ_PREFFIX${AZ_C_RESET} ℹ️"
 export AZ_PREFFIX_DEBUG="${AZ_C_DEBUG}$AZ_PREFFIX${AZ_C_RESET} 🚧"
 export AZ_DEBUG=${AZ_DEBUG:-"false"}
 typeset -gA nav_list
+alias rs="az restart"
+alias l="az load"
+alias rl="az reload"
+alias rr="az restart"
+alias up="az up"
+alias clr="clear"
+alias c="clear"
+alias dir='ls'
+alias he="az hard-exit"
 function azTraceGuard() {
  azTrace "${AZ_C_CYAN}[Guard]${AZ_C_RESET} $@"
 }
@@ -203,13 +214,19 @@ function azRunFile() {
  azError "[azRunFile] Runner for file $filePath was not found"
  return 1
 }
+function azConfigInit() {
+ if [ ! -f "$AZ_CONFIG_FILE" ]; then
+ az cli config/initialise
+ fi
+}
 function azLoadUser() {
  if [ -f "$AZ_CONFIG_DIR/include.zsh" ]; then
  source "$AZ_CONFIG_DIR/include.zsh"
  fi
 }
-export PATH="$AZ_CONFIG_DIR/bin:$PATH"
-export PATH="$HOME/.cargo/bin:$PATH"
+function azLoadUserConfig() {
+ export AZ_DEBUG=$(jq -r .debug "$AZ_CONFIG_FILE")
+}
 [ -f "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh" ] && source "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh"
 function az() {
  if [ -z "$1" ]; then
@@ -303,7 +320,6 @@ function az-cli() {
  return ${scriptCode}
 }
 azGuardSetCommand "cli"
-azLoadUser
 function listen_hotkey() {
  echo "Press a hotkey sequence (e.g., '^y^b'): "
  read -r input_hotkey
@@ -510,16 +526,6 @@ function _nav {
  compadd -- ${nav_suggestions}
 }
 compdef _nav az nav
-if [ ! -f "$AZ_CONFIG_FILE" ]; then
- az cli config/initialise
-fi
-export AZ_DEBUG=$(jq -r .debug "$AZ_CONFIG_FILE")
-alias rs="az restart"
-alias l="az load"
-alias rl="az reload"
-alias rr="az restart"
-alias up="az up"
-alias clr="clear"
-alias c="clear"
-alias dir='ls'
-alias he="az hard-exit"
+azConfigInit
+azLoadUser
+azLoadUserConfig

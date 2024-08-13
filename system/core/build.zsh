@@ -7,21 +7,26 @@
     local srcDir="$AZ_DIR/system/core/files"
 
     local files=(
-        "$srcDir/initial/paths.zsh"
-        "$srcDir/initial/colors.zsh"
-        "$srcDir/initial/preffix.zsh"
-        "$srcDir/initial/variables.zsh"
+        "$srcDir/static/paths.zsh"
+        "$srcDir/static/env-paths.zsh"
+        "$srcDir/static/colors.zsh"
+        "$srcDir/static/preffix.zsh"
+        "$srcDir/static/variables.zsh"
+        "$srcDir/static/alias.zsh"
 
         "$srcDir/functions/trace.zsh"
         "$srcDir/functions/debug.zsh"
         "$srcDir/functions/echo.zsh"
         "$srcDir/functions/guard.zsh"
         "$srcDir/functions/source.zsh"
-        "$srcDir/functions/command.zsh"
+        "$srcDir/functions/command/azGuardSetCommand.zsh"
+        "$srcDir/functions/command/azGuardCheckCommand.zsh"
+        "$srcDir/functions/command/azLoadCommand.zsh"
+        "$srcDir/functions/command/azRunCommand.zsh"
         "$srcDir/functions/run.zsh"
-        "$srcDir/functions/user.zsh"
-
-        "$srcDir/env/paths.zsh"
+        "$srcDir/functions/config/azConfigInit.zsh"
+        "$srcDir/functions/user/azLoadUser.zsh"
+        "$srcDir/functions/user/azLoadUserConfig.zsh"
 
         "$srcDir/plugin/zap.zsh"
 
@@ -32,7 +37,6 @@
         "$srcDir/commands/extend.zsh"
         "$srcDir/commands/cli.zsh"
 
-        "$srcDir/handler/load-user.zsh"
         "$srcDir/handler/bindings.zsh"
         "$srcDir/handler/not-found.zsh"
 
@@ -40,9 +44,7 @@
         "$srcDir/autocomplete/az.zsh"
         "$srcDir/autocomplete/nav.zsh"
 
-        "$srcDir/runtime/config-init.zsh"
-        "$srcDir/runtime/variables.zsh"
-        "$srcDir/runtime/alias.zsh"
+        "$srcDir/runtime/start.zsh"
 
     )
 

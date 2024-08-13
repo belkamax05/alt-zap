@@ -6,5 +6,5 @@ function azCoreSource() {
     azTrace "Sourcing $file"
     source "$file"
 }
-azCoreSource "files/initial/paths.zsh"
+azCoreSource "files/static/paths.zsh"
 azCoreSource "run-with-build.zsh"
