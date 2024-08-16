@@ -1,3 +1,5 @@
-azConfigInit
-azLoadUserConfig
-azLoadUser
+function azCoreStart() {
+    azConfigInit
+    azLoadUserConfig
+    azLoadUser
+}

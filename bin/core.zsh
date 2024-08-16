@@ -1,6 +1,7 @@
 export AZ_CONFIG_DIR="${AZ_CONFIG_DIR:-$HOME/.az}"
 export AZ_CONFIG_FILE="$AZ_CONFIG_DIR/user-config.json"
 export AZ_SYSTEM_DIR="$AZ_DIR/system"
+export AZ_SYSTEM_PLUGINS_DIR="$AZ_DIR/system/plugins"
 export AZ_SYSTEM_COMMANDS_DIR="$AZ_SYSTEM_DIR/commands"
 export NVM_DIR=${NVM_DIR:-"$AZ_CONFIG_DIR/bin/.nvm"}
 export AZ_SYSTEM_PLUGIN_DIR="$AZ_DIR/system/plugins"
@@ -275,7 +276,7 @@ function az-not-found() {
  azRunFile "$filePath" "${@:2}"
  return 0
  fi
- azDebugFunction "az-not-found" "Redirect '${AZ_C_YELLOW}not-found${AZ_C_RESET}' into az-cli ${AZ_C_YELLOW}$@${AZ_C_RESET}"
+ azDebugFunction "az-not-found" "Redirect ${AZ_C_CYAN}not-found${AZ_C_RESET} '${AZ_C_YELLOW}$1${AZ_C_RESET}' into az-cli ${AZ_C_YELLOW}${@:2}${AZ_C_RESET}"
  az-cli "$@"
  return 0
 }
@@ -391,6 +392,14 @@ function command_not_found_handler {
  # fi
  # azError "[command_not_found_handler.zsh] Command '${AZ_C_YELLOW}$1${AZ_C_RESET}'${2:+ (arguments ${AZ_C_YELLOW}${@:2}${AZ_C_RESET})} not found. Did you mean to run a different command?"
  # return 127
+ local command="$1"
+ azDebugFunction "command_not_found_handler" "Not found '${AZ_C_YELLOW}$command${AZ_C_RESET}'"
+ if [ -f "$AZ_SYSTEM_PLUGINS_DIR/$command/install.zsh" ]; then
+ azDebugFunction "command_not_found_handler" " Installing '${AZ_C_YELLOW}$command${AZ_C_RESET}'"
+ az install-plugin $command
+ "$@"
+ return 0
+ fi
  az "$@"
  return 0
 }
@@ -584,6 +593,8 @@ function _nav {
  compadd -- ${nav_suggestions}
 }
 compdef _nav az nav
-azConfigInit
-azLoadUserConfig
-azLoadUser
+function azCoreStart() {
+ azConfigInit
+ azLoadUserConfig
+ azLoadUser
+}

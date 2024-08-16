@@ -12,7 +12,7 @@ for plugin in "zsh-users/zsh-autosuggestions" "zsh-users/zsh-completions"; do
     plug "$plugin"
 done
 
-for plugin in p10k lsd nvm mvn fzf; do
+for plugin in brew p10k lsd nvm mvn fzf; do
     # az include-plugin "$plugin"
     azSourceSystemPlugin "$plugin/include.zsh"
 done

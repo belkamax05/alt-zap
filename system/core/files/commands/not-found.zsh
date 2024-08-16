@@ -17,7 +17,7 @@ function az-not-found() {
         return 0
     fi
 
-    azDebugFunction "az-not-found" "Redirect '${AZ_C_YELLOW}not-found${AZ_C_RESET}' into az-cli ${AZ_C_YELLOW}$@${AZ_C_RESET}"
+    azDebugFunction "az-not-found" "Redirect ${AZ_C_CYAN}not-found${AZ_C_RESET} '${AZ_C_YELLOW}$1${AZ_C_RESET}' into az-cli ${AZ_C_YELLOW}${@:2}${AZ_C_RESET}"
     az-cli "$@"
     return 0
 }
