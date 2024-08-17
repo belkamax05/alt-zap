@@ -593,8 +593,13 @@ function _nav {
  compadd -- ${nav_suggestions}
 }
 compdef _nav az nav
-function azCoreStart() {
+function azRuntimeInstall() {
+ echo "azRuntimeInstall"
+}
+function azRuntimeStart() {
+ azDebugFunction "azRuntimeStart" "azRuntimeStart start."
  azConfigInit
  azLoadUserConfig
  azLoadUser
+ azDebugFunction "azRuntimeStart" "azRuntimeStart END."
 }

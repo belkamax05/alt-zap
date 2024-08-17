@@ -45,6 +45,7 @@
         "$srcDir/autocomplete/az.zsh"
         "$srcDir/autocomplete/nav.zsh"
 
+        "$srcDir/runtime/install.zsh"
         "$srcDir/runtime/start.zsh"
 
     )
