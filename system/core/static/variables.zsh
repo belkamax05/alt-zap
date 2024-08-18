@@ -1,3 +1,3 @@
-AZ_DEBUG="false"
+# AZ_DEBUG="false"
 
 typeset -gA nav_list

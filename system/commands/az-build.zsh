@@ -1,4 +1,4 @@
 function az-build() {
-    az core-build
+    azFunc azCore-rebuild
     az cli-build
 }
