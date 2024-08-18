@@ -1,3 +1,0 @@
-function azRuntimeInstall() {
-    echo "azRuntimeInstall"
-}

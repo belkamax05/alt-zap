@@ -4,7 +4,7 @@ function az-not-found() {
     # azDebugFunction "az-not-found" "Execute ${AZ_C_YELLOW}$@${AZ_C_RESET}"
     # echo "This is default command not found with params $@"
 
-    if [ -f "$AZ_SYSTEM_COMMANDS_DIR/az-$command.zsh" ]; then
+    if [ -f "$AZ_COMMANDS_DIR/az-$command.zsh" ]; then
         azDebugFunction "az-not-found" "Run command '${AZ_C_YELLOW}$command${AZ_C_RESET}'"
         azRunCommand "$command" "${@:2}"
         return 0

@@ -23,10 +23,14 @@ function azSourceSystemLab() {
     azSource "$file"
 }
 function azSourceSystemModule() {
-    local file="$AZ_SYSTEM_COMMANDS_DIR/$1"
+    local file="$AZ_COMMANDS_DIR/$1"
     azSource "$file"
 }
 function azSourceSystemPlugin() {
-    local file="$AZ_SYSTEM_PLUGIN_DIR/$1"
+    local file="$AZ_PLUGINS_DIR/$1"
+    azSource "$file"
+}
+function azSourceFunc() {
+    local file="$AZ_FUNCTIONS_DIR/$1"
     azSource "$file"
 }

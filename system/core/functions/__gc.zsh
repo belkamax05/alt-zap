@@ -1,7 +1,7 @@
 # function azFindCommand() {
 #     azDebugFunction "azFindCommand" "${AZ_C_YELLOW}$@${AZ_C_RESET}"
 #     local command="$1"
-#     if [[ -f "$AZ_SYSTEM_COMMANDS_DIR/az-$command.zsh" ]]; then
+#     if [[ -f "$AZ_COMMANDS_DIR/az-$command.zsh" ]]; then
 #         azRunCommand "$command" "${@:2}"
 #         return 0
 #     fi

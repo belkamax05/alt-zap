@@ -4,7 +4,7 @@
     rm -f "$coreFile"
     touch "$coreFile"
 
-    local srcDir="$AZ_DIR/system/core/files"
+    local srcDir="$AZ_DIR/system/core"
 
     local files=(
         "$srcDir/static/paths.zsh"
@@ -19,14 +19,9 @@
         "$srcDir/functions/echo.zsh"
         "$srcDir/functions/guard.zsh"
         "$srcDir/functions/source.zsh"
-        "$srcDir/functions/command/azGuardSetCommand.zsh"
-        "$srcDir/functions/command/azGuardCheckCommand.zsh"
-        "$srcDir/functions/command/azLoadCommand.zsh"
-        "$srcDir/functions/command/azRunCommand.zsh"
+        "$srcDir/functions/functions.zsh"
+        "$srcDir/functions/commands.zsh"
         "$srcDir/functions/run.zsh"
-        "$srcDir/functions/config/azConfigInit.zsh"
-        "$srcDir/functions/user/azLoadUser.zsh"
-        "$srcDir/functions/user/azLoadUserConfig.zsh"
 
         "$srcDir/plugin/zap.zsh"
 
@@ -44,9 +39,6 @@
         "$srcDir/autocomplete/init.zsh"
         "$srcDir/autocomplete/az.zsh"
         "$srcDir/autocomplete/nav.zsh"
-
-        "$srcDir/runtime/install.zsh"
-        "$srcDir/runtime/start.zsh"
 
     )
 

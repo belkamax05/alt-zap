@@ -8,7 +8,7 @@ function command_not_found_handler {
 
     local command="$1"
     azDebugFunction "command_not_found_handler" "Not found '${AZ_C_YELLOW}$command${AZ_C_RESET}'"
-    if [ -f "$AZ_SYSTEM_PLUGINS_DIR/$command/install.zsh" ]; then
+    if [ -f "$AZ_PLUGINS_DIR/$command/install.zsh" ]; then
         azDebugFunction "command_not_found_handler" " Installing '${AZ_C_YELLOW}$command${AZ_C_RESET}'"
         az install-plugin $command
         "$@"

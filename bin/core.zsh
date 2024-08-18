@@ -1,12 +1,13 @@
+export AZ_BIN_DIR="$AZ_DIR/bin"
+export AZ_SYSTEM_DIR="$AZ_DIR/system"
+export AZ_CORE_COMPILED_PATH="$AZ_BIN_DIR/core.zsh"
+export AZ_CORE_COMPILED_MIN_PATH="$AZ_BIN_DIR/core.min.zsh"
+export AZ_PLUGINS_DIR="$AZ_SYSTEM_DIR/plugins"
+export AZ_COMMANDS_DIR="$AZ_SYSTEM_DIR/commands"
+export AZ_FUNCTIONS_DIR="$AZ_SYSTEM_DIR/functions"
 export AZ_CONFIG_DIR="${AZ_CONFIG_DIR:-$HOME/.az}"
 export AZ_CONFIG_FILE="$AZ_CONFIG_DIR/user-config.json"
-export AZ_SYSTEM_DIR="$AZ_DIR/system"
-export AZ_SYSTEM_PLUGINS_DIR="$AZ_DIR/system/plugins"
-export AZ_SYSTEM_COMMANDS_DIR="$AZ_SYSTEM_DIR/commands"
 export NVM_DIR=${NVM_DIR:-"$AZ_CONFIG_DIR/bin/.nvm"}
-export AZ_SYSTEM_PLUGIN_DIR="$AZ_DIR/system/plugins"
-export AZ_CORE_COMPILED_PATH="$AZ_DIR/bin/core.zsh"
-export AZ_CORE_COMPILED_MIN_PATH="$AZ_DIR/bin/core.min.zsh"
 export PATH="$AZ_CONFIG_DIR/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export AZ_C_CYAN="\033[38;5;51m" #00FFFF
@@ -158,18 +159,69 @@ function azSourceSystemLab() {
  azSource "$file"
 }
 function azSourceSystemModule() {
- local file="$AZ_SYSTEM_COMMANDS_DIR/$1"
+ local file="$AZ_COMMANDS_DIR/$1"
  azSource "$file"
 }
 function azSourceSystemPlugin() {
- local file="$AZ_SYSTEM_PLUGIN_DIR/$1"
+ local file="$AZ_PLUGINS_DIR/$1"
  azSource "$file"
+}
+function azSourceFunc() {
+ local file="$AZ_FUNCTIONS_DIR/$1"
+ azSource "$file"
+}
+function azGuardCheckFunction() {
+ azGuardCheck "function_$1"
+}
+function azGuardSetFunction() {
+ azGuardSet "function_$1"
+}
+function azLoadFunction() {
+ local func="$1"
+ # replace / with -
+ local funcDashed="${func//\//-}"
+ # alternative name, replace - with /
+ local funcSlashed="${func//-//}"
+ azGuardCheckFunction "$funcDashed"
+ if [ $? -eq 1 ]; then
+ return 0
+ fi
+ # searching for "-" version of function
+ if [ -f "$AZ_FUNCTIONS_DIR/$funcDashed.zsh" ]; then
+ azDebugFunction "azLoadFunction" "Initialising '${AZ_C_YELLOW}$funcDashed${AZ_C_RESET}' function"
+ azSource "$AZ_FUNCTIONS_DIR/$funcDashed.zsh"
+ azGuardSetFunction "$funcDashed"
+ return 0
+ fi
+ # searching for "/" version of function
+ if [ -f "$AZ_FUNCTIONS_DIR/$funcSlashed.zsh" ]; then
+ azDebugFunction "azLoadFunction" "Initialising '${AZ_C_YELLOW}$funcSlashed${AZ_C_RESET}' function"
+ azSource "$AZ_FUNCTIONS_DIR/$funcSlashed.zsh"
+ azGuardSetFunction "$funcDashed"
+ return 0
+ fi
+ azDebugFunction "azLoadFunction" "Function '${AZ_C_YELLOW}$func${AZ_C_RESET}' not found"
+ return 1
+}
+function azRunFunction() {
+ local func="$1"
+ # replace / with -
+ local funcDashed="${func//\//-}"
+ azGuardCheckFunction "$funcDashed"
+ if [ $? -eq 0 ]; then
+ azLoadFunction "$func"
+ fi
+ azDebugFunction "azLoadFunction" "Run function '${AZ_C_YELLOW}$func${AZ_C_RESET}' with args ${AZ_C_YELLOW}${@:2}${AZ_C_RESET}"
+ $funcDashed "${@:2}"
+ return 0
+}
+alias azFunction=azRunFunction
+alias azFunc=azRunFunction
+function azGuardCheckCommand() {
+ azGuardCheck "command_$1"
 }
 function azGuardSetCommand() {
  azGuardSet "command_$1"
-}
-function azGuardCheckCommand() {
- azGuardCheck "command_$1"
 }
 function azLoadCommand() {
  local command="$1"
@@ -177,9 +229,9 @@ function azLoadCommand() {
  if [ $? -eq 1 ]; then
  return 0
  fi
- if [ -f "$AZ_SYSTEM_COMMANDS_DIR/az-$command.zsh" ]; then
- azDebugFunction "azLoadCommand" "Initialising '${AZ_C_YELLOW}$command${AZ_C_RESET}' comand"
- azSource "$AZ_SYSTEM_COMMANDS_DIR/az-$command.zsh"
+ if [ -f "$AZ_COMMANDS_DIR/az-$command.zsh" ]; then
+ azDebugFunction "azLoadCommand" "Initialising '${AZ_C_YELLOW}$command${AZ_C_RESET}' command"
+ azSource "$AZ_COMMANDS_DIR/az-$command.zsh"
  azGuardSetCommand "$command"
  return 0
  fi
@@ -222,20 +274,6 @@ function azRunFile() {
  azError "[azRunFile] Runner for file $filePath was not found"
  return 1
 }
-function azConfigInit() {
- if [ ! -f "$AZ_CONFIG_FILE" ]; then
- az cli config/initialise
- fi
-}
-function azLoadUser() {
- if [ ! -f "$AZ_CONFIG_DIR/include.zsh" ]; then
- touch "$AZ_CONFIG_DIR/include.zsh"
- fi
- source "$AZ_CONFIG_DIR/include.zsh"
-}
-function azLoadUserConfig() {
- AZ_DEBUG=$(jq -r .debug "$AZ_CONFIG_FILE")
-}
 [ -f "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh" ] && source "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh"
 function az() {
  if [ -z "$1" ]; then
@@ -265,7 +303,7 @@ function az-not-found() {
  azDebugFunction "az-not-found" "Not found '${AZ_C_YELLOW}$command${AZ_C_RESET}'"
  # azDebugFunction "az-not-found" "Execute ${AZ_C_YELLOW}$@${AZ_C_RESET}"
  # echo "This is default command not found with params $@"
- if [ -f "$AZ_SYSTEM_COMMANDS_DIR/az-$command.zsh" ]; then
+ if [ -f "$AZ_COMMANDS_DIR/az-$command.zsh" ]; then
  azDebugFunction "az-not-found" "Run command '${AZ_C_YELLOW}$command${AZ_C_RESET}'"
  azRunCommand "$command" "${@:2}"
  return 0
@@ -394,7 +432,7 @@ function command_not_found_handler {
  # return 127
  local command="$1"
  azDebugFunction "command_not_found_handler" "Not found '${AZ_C_YELLOW}$command${AZ_C_RESET}'"
- if [ -f "$AZ_SYSTEM_PLUGINS_DIR/$command/install.zsh" ]; then
+ if [ -f "$AZ_PLUGINS_DIR/$command/install.zsh" ]; then
  azDebugFunction "command_not_found_handler" " Installing '${AZ_C_YELLOW}$command${AZ_C_RESET}'"
  az install-plugin $command
  "$@"
@@ -593,13 +631,3 @@ function _nav {
  compadd -- ${nav_suggestions}
 }
 compdef _nav az nav
-function azRuntimeInstall() {
- echo "azRuntimeInstall"
-}
-function azRuntimeStart() {
- azDebugFunction "azRuntimeStart" "azRuntimeStart start."
- azConfigInit
- azLoadUserConfig
- azLoadUser
- azDebugFunction "azRuntimeStart" "azRuntimeStart END."
-}

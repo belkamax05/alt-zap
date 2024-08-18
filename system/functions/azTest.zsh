@@ -1,0 +1,3 @@
+function azTest() {
+  echo "azTest: $@"
+}
