@@ -7,18 +7,14 @@
     local srcDir="$AZ_DIR/system/core"
 
     local files=(
-        "$srcDir/static/paths.zsh"
         "$srcDir/static/env-paths.zsh"
         "$srcDir/static/colors.zsh"
         "$srcDir/static/preffix.zsh"
         "$srcDir/static/variables.zsh"
         "$srcDir/static/alias.zsh"
 
-        "$srcDir/functions/trace.zsh"
         "$srcDir/functions/debug.zsh"
         "$srcDir/functions/echo.zsh"
-        "$srcDir/functions/guard.zsh"
-        "$srcDir/functions/source.zsh"
         "$srcDir/functions/functions.zsh"
         "$srcDir/functions/commands.zsh"
         "$srcDir/functions/run.zsh"

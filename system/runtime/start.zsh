@@ -1,6 +1,6 @@
-source "$AZ_DIR/system/runtime/define.zsh"
+export AZ_RUNTIME_DIR=$(dirname "${(%):-%N}")
+source "$AZ_DIR/system/define/include.zsh"
 
-azCoreSource static/paths.zsh
 if [ -f "$AZ_CONFIG_INIT" ]; then
     azConfigSource init.zsh
 fi

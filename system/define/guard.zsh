@@ -1,12 +1,12 @@
 function azGuardSet() {
     local name="$1"
-    azTraceGuard "Guard set: '${AZ_C_YELLOW}$name${AZ_C_RESET}'"
+    azTraceGuard "Set '${AZ_C_YELLOW}$name${AZ_C_RESET}'"
     AZ_GUARD="AZ_GUARD_${name//-/_}_ZSH"
     eval "$AZ_GUARD=1"
 }
 function azGuardUnset() {
     local name="$1"
-    azTraceGuard "Guard unset: '${AZ_C_YELLOW}$name${AZ_C_RESET}'"
+    azTraceGuard "Unset '${AZ_C_YELLOW}$name${AZ_C_RESET}'"
     AZ_GUARD="AZ_GUARD_${name//-/_}_ZSH"
     eval "$AZ_GUARD=0"
 }
