@@ -10,10 +10,11 @@ azRuntimeSource config-init-user-file.zsh
 azRuntimeSource config-load-user-file.zsh
 azConfigSource load.zsh
 azRuntimeSource load-plugins.zsh
-azRuntimeSource load-kali-configuration.zsh
+azRuntimeSource shell-configure.zsh
+azRuntimeSource setup-prompt.zsh
+azRuntimeSource setup-completion.zsh
 azConfigSource start.zsh
 
 # azSourceSystemPlugin "include.zsh"
-
 
 # azFunc azAllTests
