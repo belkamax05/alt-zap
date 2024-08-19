@@ -1,3 +1,6 @@
+if [ ! -d "$FZF_TAB_DIR" ]; then
+    az install fzf-tab
+fi
 autoload -U compinit
 compinit
-source $AZ_CONFIG_DIR/cloned/fzf-tab/fzf-tab.plugin.zsh
+source $FZF_TAB_DIR/fzf-tab.plugin.zsh

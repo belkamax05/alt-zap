@@ -212,7 +212,6 @@ function azRunFile() {
  azError "[azRunFile] Runner for file $filePath was not found"
  return 1
 }
-[ -f "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh" ] && source "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh"
 function az() {
  if [ -z "$1" ]; then
  echo "!az! Default view TODO replace"

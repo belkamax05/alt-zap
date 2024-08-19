@@ -19,8 +19,6 @@
         "$srcDir/functions/commands.zsh"
         "$srcDir/functions/run.zsh"
 
-        "$srcDir/plugin/zap.zsh"
-
         "$srcDir/commands/az.zsh"
         "$srcDir/commands/not-found.zsh"
         "$srcDir/commands/here.zsh"
