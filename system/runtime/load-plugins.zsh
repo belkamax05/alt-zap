@@ -1,4 +1,4 @@
-for plugin in nvm zap fzf-tab; do
+for plugin in nvm zap fzf fzf-tab; do
     azSourceSystemPlugin "$plugin/include.zsh"
 done
 

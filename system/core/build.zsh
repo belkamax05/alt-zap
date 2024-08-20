@@ -30,7 +30,6 @@
         "$srcDir/handler/bindings.zsh"
         "$srcDir/handler/not-found.zsh"
 
-        "$srcDir/autocomplete/init.zsh"
         "$srcDir/autocomplete/az.zsh"
         "$srcDir/autocomplete/nav.zsh"
 

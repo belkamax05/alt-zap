@@ -381,9 +381,6 @@ function command_not_found_handler {
  az "$@"
  return 0
 }
-autoload -Uz compinit
-compinit
-compdef _az az
 __az_debug()
 {
  local file="$BASH_COMP_DEBUG_FILE"
@@ -565,9 +562,8 @@ fi
 function _nav {
  local -a nav_suggestions=()
  for key in "${(k)nav_list[@]}"; do
- echo "Add suggestion: $key"
+ echo _nav "Add suggestion: $key"
  nav_suggestions+=($key)
  done
  compadd -- ${nav_suggestions}
 }
-compdef _nav az nav

@@ -1,5 +1,4 @@
 
-compdef _az az
 
 # zsh completion for az                                  -*- shell-script -*-
 
