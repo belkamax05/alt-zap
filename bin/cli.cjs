@@ -83,6 +83,21 @@ var init_getUserConfig = __esm({
   }
 });
 
+// apps/cli/src/types/error/CommandImportError.ts
+var CommandImportError, CommandImportError_default;
+var init_CommandImportError = __esm({
+  "apps/cli/src/types/error/CommandImportError.ts"() {
+    CommandImportError = class extends Error {
+      constructor(command) {
+        super(`Error importing command: ${command}`);
+        this.command = command;
+        this.name = "CommandImportError";
+      }
+    };
+    CommandImportError_default = CommandImportError;
+  }
+});
+
 // apps/cli/src/utils/satisfiesLegacy.ts
 var satisfiesLegacy, satisfiesLegacy_default;
 var init_satisfiesLegacy = __esm({
@@ -137,20 +152,6 @@ var init_alias = __esm({
       null
     );
     alias_default = alias;
-  }
-});
-
-// apps/cli/src/types/error/CommandImportError.ts
-var CommandImportError, CommandImportError_default;
-var init_CommandImportError = __esm({
-  "apps/cli/src/types/error/CommandImportError.ts"() {
-    CommandImportError = class extends Error {
-      constructor(command) {
-        super(`Error importing command: ${command}`);
-        this.name = "CommandImportError";
-      }
-    };
-    CommandImportError_default = CommandImportError;
   }
 });
 
@@ -1116,7 +1117,6 @@ var init_importCommand = __esm({
         const { default: module2 } = await globImport_commands_ts(`../commands/${command}.ts`);
         return module2;
       } catch (error) {
-        console.error(error);
         throw new CommandImportError_default(command);
       }
     };
@@ -1216,8 +1216,10 @@ var LoggerInstance = class {
 var LoggerInstance_default = LoggerInstance;
 
 // apps/cli/src/types/app/ProgramInstance.ts
+var import_prompts9 = require("@clack/prompts");
 var import_colors6 = __toESM(require("colors"), 1);
 var import_minimist2 = __toESM(require("minimist"), 1);
+init_CommandImportError();
 init_CommandInstance();
 
 // apps/cli/src/types/app/ContextInstance.ts
@@ -1292,16 +1294,25 @@ var ProgramInstance = class {
       return removedItem;
     };
     this.run = async () => {
-      this.debug.debug("run. Argv: ", this.argv);
-      const context = this.getFirstContext();
-      if (context) {
-        this.debug.debug("context run");
-        await context.run();
-        this.removeFirstContext();
-      }
-      if (this.contexts.length > 0) {
-        this.debug.debug("remain");
-        return await this.run();
+      try {
+        this.debug.debug("run. Argv: ", this.argv);
+        const context = this.getFirstContext();
+        if (context) {
+          this.debug.debug("context run");
+          await context.run();
+          this.removeFirstContext();
+        }
+        if (this.contexts.length > 0) {
+          this.debug.debug("remain");
+          return await this.run();
+        }
+      } catch (error) {
+        if (error instanceof CommandImportError_default) {
+          import_prompts9.log.error(
+            `Command '${import_colors6.default.yellow(error.command)}' is not available.`
+          );
+          return;
+        }
       }
     };
     this.argv = argv;

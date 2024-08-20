@@ -1,8 +1,10 @@
 import { AzConfig, ProgramBaseArgs, ProgramEnv } from '@az/types';
 import getUserConfig from '@az/utils/config/getUserConfig';
 import LoggerInstance from '@az/utils/logs/LoggerInstance';
+import { log } from '@clack/prompts';
 import colors from 'colors';
 import minimist from 'minimist';
+import CommandImportError from '../error/CommandImportError';
 import CommandInstance from './CommandInstance';
 import ContextInstance from './ContextInstance';
 
@@ -77,17 +79,26 @@ class ProgramInstance {
   };
 
   run = async () => {
-    this.debug.debug('run. Argv: ', this.argv);
+    try {
+      this.debug.debug('run. Argv: ', this.argv);
 
-    const context = this.getFirstContext();
-    if (context) {
-      this.debug.debug('context run');
-      await context.run();
-      this.removeFirstContext();
-    }
-    if (this.contexts.length > 0) {
-      this.debug.debug('remain');
-      return await this.run();
+      const context = this.getFirstContext();
+      if (context) {
+        this.debug.debug('context run');
+        await context.run();
+        this.removeFirstContext();
+      }
+      if (this.contexts.length > 0) {
+        this.debug.debug('remain');
+        return await this.run();
+      }
+    } catch (error) {
+      if (error instanceof CommandImportError) {
+        log.error(
+          `Command '${colors.yellow(error.command)}' is not available.`,
+        );
+        return;
+      }
     }
   };
 }
