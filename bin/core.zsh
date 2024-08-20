@@ -44,6 +44,9 @@ alias rr="restart"
 alias clr="clear"
 alias c="clear"
 alias dir='ls'
+alias ll='ls -l'
+alias la='ls -A'
+alias l='ls -CF'
 function azIsDebug() {
  if [ "$AZ_DEBUG" = "true" ]; then
  return 0

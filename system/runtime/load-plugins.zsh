@@ -9,13 +9,13 @@ for plugin in \
     zsh-users/zsh-autosuggestions \
     zsh-users/zsh-completions \
     zsh-users/zsh-syntax-highlighting \
-    zap-zsh/supercharge; do # zap-zsh/zap-prompt \
+    wintermi/zsh-lsd \
+    zap-zsh/supercharge; do
     plug "$plugin"
 done
+# zap-zsh/zap-prompt
 
 # plug "zap-zsh/zap-prompt"
-# plug "zsh-users/zsh-syntax-highlighting"
-
 # for plugin in brew p10k lsd nvm mvn fzf; do
 #     # az include-plugin "$plugin"
 #     azSourceSystemPlugin "$plugin/include.zsh"

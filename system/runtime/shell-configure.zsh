@@ -1,1 +1,1 @@
-azSourceSystem configure/kali-configuration.zsh
+azRuntimeSource configure/kali-configuration.zsh
