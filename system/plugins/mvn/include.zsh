@@ -1,1 +1,4 @@
-export PATH="$AZ_CONFIG_DIR/bin/apache-maven-3.9.7/bin:$PATH"
+if [ ! -d "$MVN_DIR" ]; then
+    az install mvn
+fi
+export PATH="$MVN_DIR/bin:$PATH"

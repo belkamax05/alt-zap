@@ -5,7 +5,7 @@ URL="https://dlcdn.apache.org/maven/maven-3/3.9.7/binaries/apache-maven-3.9.7-bi
 DOWNLOAD_DIR="$AZ_CONFIG_DIR/temp"
 
 # Directory to extract the file to
-EXTRACT_DIR="$AZ_CONFIG_DIR/bin"
+EXTRACT_DIR="$AZ_PLUGINS_INSTALLED_DIR"
 
 # Create the directories if they don't exist
 mkdir -p "$DOWNLOAD_DIR"
