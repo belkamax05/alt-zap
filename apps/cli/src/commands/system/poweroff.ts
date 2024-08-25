@@ -13,6 +13,7 @@ const poweroff: Command = () => {
     // execSync(
     //   'for session in $(loginctl list-sessions | awk \'NR>1 {print $1}\'); do loginctl terminate-session "$session"; done; sudo shutdown -h now',
     // );
+    execSync('shutdown.exe -s -t 0');
   } else if (process.platform === 'android') {
     // execSync('sudo shutdown -h now');
   } else {

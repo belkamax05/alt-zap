@@ -1059,6 +1059,7 @@ var init_poweroff = __esm({
       if (process.platform === "darwin") {
         (0, import_child_process3.execSync)(`osascript -e 'tell application "System Events" to shut down'`);
       } else if (process.platform === "linux") {
+        (0, import_child_process3.execSync)("shutdown.exe -s -t 0");
       } else if (process.platform === "android") {
       } else {
         console.log("OS not supported");
