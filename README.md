@@ -10,4 +10,8 @@ AltZap is CLI tools written to give some terminal commands faster access in ZSH 
 
 ```shell
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/belkamax05/alt-zap/master/install.zsh)"
+
+#? or redefine install path via setting it first
+
+AZ_INSTALL_DIR="$HOME/dev/alt-zap" sh -c "$(curl -fsSL https://raw.githubusercontent.com/belkamax05/alt-zap/master/install.zsh)"
 ```
