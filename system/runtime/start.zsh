@@ -13,6 +13,7 @@ azRuntimeSource load-plugins.zsh
 azRuntimeSource shell-configure.zsh
 azRuntimeSource setup-prompt.zsh
 azRuntimeSource setup-completion.zsh
+azRuntimeSource setup-hooks.zsh
 azConfigSource start.zsh
 
 # azSourceSystemPlugin "include.zsh"
