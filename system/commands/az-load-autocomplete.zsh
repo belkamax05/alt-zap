@@ -1,3 +1,0 @@
-function az-load-autocomplete() {
-
-}

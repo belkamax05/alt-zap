@@ -34,15 +34,7 @@ function azSourceFunc() {
     local file="$AZ_FUNCTIONS_DIR/$1"
     azSource "$file"
 }
-function azRuntimeSource() {
-    local file="$AZ_RUNTIME_DIR/$1"
-    azSource "$file"
-}
 function azCoreSource() {
     local file="$AZ_DIR/system/core/$1"
-    azSource "$file"
-}
-function azConfigSource() {
-    local file="$AZ_CONFIG_DIR/$1"
     azSource "$file"
 }
