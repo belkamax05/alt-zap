@@ -12,7 +12,10 @@ export default function Index() {
    * Note: The corresponding styles are in the ./index.@emotion/styled file.
    */
   return (
-    <div className="wrapper">Index page. This page is under development</div>
+    <div className="wrapper">
+      Index page. This page is under development belkamax05(at)gmail for details
+      about this domain.
+    </div>
   );
 }
 
